@@ -1,0 +1,72 @@
+[
+  {
+    "id": "3uuyq2b4eon",
+    "createdAt": "2026-08-07T10:33:41.207Z",
+    "updatedAt": "2026-08-07T10:33:41.207Z",
+    "userId": "9450j5m4em0",
+    "content": "Kabir Verma requested to borrow your Arduino Uno R3.",
+    "type": "request_received",
+    "relatedId": "wdxfzet4emb",
+    "isRead": false
+  },
+  {
+    "id": "t2rhyxj4eos",
+    "createdAt": "2026-08-07T10:33:41.212Z",
+    "updatedAt": "2026-08-07T10:33:41.212Z",
+    "userId": "ffc1ai84em6",
+    "content": "Welcome to CampusShare! Complete your profile to get started.",
+    "type": "welcome",
+    "relatedId": "",
+    "isRead": true
+  },
+  {
+    "id": "ehg1r274eov",
+    "createdAt": "2026-08-07T10:33:41.215Z",
+    "updatedAt": "2026-08-07T10:33:41.215Z",
+    "userId": "klbtyxe4em7",
+    "content": "Your borrowed ESP32 Development Board is 5 days OVERDUE. Return immediately to avoid trust score drop!",
+    "type": "overdue",
+    "relatedId": "7hcjmov4eni",
+    "isRead": false
+  },
+  {
+    "id": "cplxhnw4eow",
+    "createdAt": "2026-08-07T10:33:41.216Z",
+    "updatedAt": "2026-08-07T10:33:41.216Z",
+    "userId": "uawfqdg4em2",
+    "content": "Diya Patel approved your request for Casio fx-991EX Scientific Calculator.",
+    "type": "request_approved",
+    "relatedId": "8yrmp5m4eo6",
+    "isRead": true
+  },
+  {
+    "id": "vytd5j24ep1",
+    "createdAt": "2026-08-07T10:33:41.221Z",
+    "updatedAt": "2026-08-07T10:33:41.221Z",
+    "userId": "68hhhf94em4",
+    "content": "Your borrowed Raspberry Pi 4 is 10 days OVERDUE. Your account is restricted.",
+    "type": "overdue",
+    "relatedId": "tkp08ao4enp",
+    "isRead": false
+  },
+  {
+    "id": "tsi1fk8cf3d",
+    "createdAt": "2026-08-12T18:30:09.769Z",
+    "updatedAt": "2026-08-12T18:30:09.769Z",
+    "userId": "9450j5m4em0",
+    "content": "URGENT: Your borrowed item \"Soldering Iron Kit (60W)\" is overdue. Your trust score decreased by 15 points.",
+    "type": "overdue",
+    "relatedId": "in3dt164eo3",
+    "isRead": false
+  },
+  {
+    "id": "y8atqzucf3h",
+    "createdAt": "2026-08-12T18:30:09.773Z",
+    "updatedAt": "2026-08-12T18:30:09.773Z",
+    "userId": "68hhhf94em4",
+    "content": "Your resource \"Soldering Iron Kit (60W)\" lent to Aarav Mehta is now overdue.",
+    "type": "overdue",
+    "relatedId": "in3dt164eo3",
+    "isRead": false
+  }
+]

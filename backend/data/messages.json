@@ -1,0 +1,29 @@
+[
+  {
+    "id": "5qx76km4epg",
+    "createdAt": "2026-08-07T10:33:41.236Z",
+    "updatedAt": "2026-08-07T10:33:41.236Z",
+    "senderId": "ffc1ai84em6",
+    "receiverId": "9450j5m4em0",
+    "content": "Hi Aarav, is your Arduino Uno available tomorrow? I need it for a quick test.",
+    "timestamp": "2026-08-06T10:33:41.235Z"
+  },
+  {
+    "id": "ej1tarr4epi",
+    "createdAt": "2026-08-07T10:33:41.238Z",
+    "updatedAt": "2026-08-07T10:33:41.238Z",
+    "senderId": "9450j5m4em0",
+    "receiverId": "ffc1ai84em6",
+    "content": "Hi Kabir! Yes, it is available. I just placed a request on the dashboard. Propose a meeting point!",
+    "timestamp": "2026-08-06T10:33:41.237Z"
+  },
+  {
+    "id": "52r6f744epk",
+    "createdAt": "2026-08-07T10:33:41.240Z",
+    "updatedAt": "2026-08-07T10:33:41.240Z",
+    "senderId": "ffc1ai84em6",
+    "receiverId": "9450j5m4em0",
+    "content": "Awesome, will meet you near CS Lab 2 tomorrow morning at 10 AM. Sending a request now.",
+    "timestamp": "2026-08-06T10:33:41.239Z"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "4b0y4274eoh",
+    "createdAt": "2026-08-07T10:33:41.201Z",
+    "updatedAt": "2026-08-07T10:33:41.201Z",
+    "transactionId": "ve3oaes4eoa",
+    "raterId": "uawfqdg4em2",
+    "rateeId": "z4oaevh4em5",
+    "rating": 5,
+    "review": "Awesome owner! Fast handover and calculator was in prestine condition. Thank you!"
+  },
+  {
+    "id": "pwz1eyz4eoj",
+    "createdAt": "2026-08-07T10:33:41.203Z",
+    "updatedAt": "2026-08-07T10:33:41.203Z",
+    "transactionId": "ve3oaes4eoa",
+    "raterId": "z4oaevh4em5",
+    "rateeId": "uawfqdg4em2",
+    "rating": 5,
+    "review": "Returned on time and was very polite. Highly recommended!"
+  }
+]

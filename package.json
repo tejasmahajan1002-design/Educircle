@@ -1,0 +1,17 @@
+{
+  "name": "campushare-root",
+  "version": "1.0.0",
+  "description": "CampusShare – Community & Resource Sharing Hub",
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "seed": "cd backend && npm run seed",
+    "server": "cd backend && npm start",
+    "client": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

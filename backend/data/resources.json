@@ -1,0 +1,697 @@
+[
+  {
+    "id": "wdxfzet4emb",
+    "createdAt": "2026-08-07T10:33:41.123Z",
+    "updatedAt": "2026-08-07T10:33:41.123Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "Arduino Uno R3",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Arduino Uno R3 available for college students. Pick up from CS Lab 2.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 7,
+    "location": "CS Lab 2",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.8
+  },
+  {
+    "id": "ut0dzcz4emc",
+    "createdAt": "2026-08-07T10:33:41.124Z",
+    "updatedAt": "2026-08-07T10:33:41.124Z",
+    "ownerId": "uawfqdg4em2",
+    "ownerName": "Ananya Sharma",
+    "name": "ESP32 Development Board",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality ESP32 Development Board available for college students. Pick up from ECE Department Room 12.",
+    "type": "Physical Item",
+    "condition": "New",
+    "availability": "borrowed",
+    "lendingDuration": 10,
+    "location": "ECE Department Room 12",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.5
+  },
+  {
+    "id": "f57ytcx4emd",
+    "createdAt": "2026-08-07T10:33:41.125Z",
+    "updatedAt": "2026-08-07T10:33:41.125Z",
+    "ownerId": "z4oaevh4em5",
+    "ownerName": "Diya Patel",
+    "name": "Casio fx-991EX Scientific Calculator",
+    "category": "Student Equipment",
+    "description": "Premium high-quality Casio fx-991EX Scientific Calculator available for college students. Pick up from Library Lobby.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 5,
+    "location": "Library Lobby",
+    "images": [
+      "/images/mock_student_equipment.png"
+    ],
+    "ratingAverage": 4.9
+  },
+  {
+    "id": "4bqw0sy4emd",
+    "createdAt": "2026-08-07T10:33:41.125Z",
+    "updatedAt": "2026-08-07T10:33:41.125Z",
+    "ownerId": "ffc1ai84em6",
+    "ownerName": "Kabir Verma",
+    "name": "Mini Digital Multimeter",
+    "category": "Tools",
+    "description": "Premium high-quality Mini Digital Multimeter available for college students. Pick up from Electrical Lab 1.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 3,
+    "location": "Electrical Lab 1",
+    "images": [
+      "/images/mock_tools.png"
+    ],
+    "ratingAverage": 4.5
+  },
+  {
+    "id": "qrshmv64emd",
+    "createdAt": "2026-08-07T10:33:41.125Z",
+    "updatedAt": "2026-08-07T10:33:41.125Z",
+    "ownerId": "wunymtz4em6",
+    "ownerName": "Neha Reddy",
+    "name": "Raspberry Pi 4 Model B (4GB)",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Raspberry Pi 4 Model B (4GB) available for college students. Pick up from CS Lab 3.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "borrowed",
+    "lendingDuration": 14,
+    "location": "CS Lab 3",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "dl7zev44eme",
+    "createdAt": "2026-08-07T10:33:41.126Z",
+    "updatedAt": "2026-08-07T10:33:41.126Z",
+    "ownerId": "68hhhf94em4",
+    "ownerName": "Vikram Singh",
+    "name": "GATE CSE Handbook 2025 (Made Easy)",
+    "category": "Books",
+    "description": "Premium high-quality GATE CSE Handbook 2025 (Made Easy) available for college students. Pick up from Hostel A Room 302.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 30,
+    "location": "Hostel A Room 302",
+    "images": [
+      "/images/mock_books.png"
+    ],
+    "ratingAverage": 4
+  },
+  {
+    "id": "1k366p74eme",
+    "createdAt": "2026-08-07T10:33:41.126Z",
+    "updatedAt": "2026-08-07T10:33:41.126Z",
+    "ownerId": "o8ifxhd4em7",
+    "ownerName": "Isha Nair",
+    "name": "Breadboard and 65pcs Jumper Wires",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Breadboard and 65pcs Jumper Wires available for college students. Pick up from ECE Lab.",
+    "type": "Physical Item",
+    "condition": "Used",
+    "availability": "available",
+    "lendingDuration": 15,
+    "location": "ECE Lab",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.1
+  },
+  {
+    "id": "0hsnun24emf",
+    "createdAt": "2026-08-07T10:33:41.127Z",
+    "updatedAt": "2026-08-07T10:33:41.127Z",
+    "ownerId": "kphm8l44em8",
+    "ownerName": "Meera Joshi",
+    "name": "Engineering Drawing Drafter",
+    "category": "Student Equipment",
+    "description": "Premium high-quality Engineering Drawing Drafter available for college students. Pick up from Drawing Hall B.",
+    "type": "Physical Item",
+    "condition": "Used",
+    "availability": "available",
+    "lendingDuration": 21,
+    "location": "Drawing Hall B",
+    "images": [
+      "/images/mock_student_equipment.png"
+    ],
+    "ratingAverage": 3.8
+  },
+  {
+    "id": "jeasxli4emf",
+    "createdAt": "2026-08-07T10:33:41.127Z",
+    "updatedAt": "2026-08-07T10:33:41.127Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "HC-SR04 Ultrasonic Sensors (x3)",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality HC-SR04 Ultrasonic Sensors (x3) available for college students. Pick up from Hostel B Room 105.",
+    "type": "Physical Item",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 5,
+    "location": "Hostel B Room 105",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "6oc20wm4emh",
+    "createdAt": "2026-08-07T10:33:41.129Z",
+    "updatedAt": "2026-08-07T10:33:41.129Z",
+    "ownerId": "68hhhf94em4",
+    "ownerName": "Vikram Singh",
+    "name": "Soldering Iron Kit (60W)",
+    "category": "Tools",
+    "description": "Premium high-quality Soldering Iron Kit (60W) available for college students. Pick up from Mechanical Workshop.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "borrowed",
+    "lendingDuration": 3,
+    "location": "Mechanical Workshop",
+    "images": [
+      "/images/mock_tools.png"
+    ],
+    "ratingAverage": 3.9
+  },
+  {
+    "id": "nqd1fkg4emi",
+    "createdAt": "2026-08-07T10:33:41.130Z",
+    "updatedAt": "2026-08-07T10:33:41.130Z",
+    "ownerId": "wunymtz4em6",
+    "ownerName": "Neha Reddy",
+    "name": "White Lab Coat (Size L)",
+    "category": "Student Equipment",
+    "description": "Premium high-quality White Lab Coat (Size L) available for college students. Pick up from Chemistry Lab Entrance.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 2,
+    "location": "Chemistry Lab Entrance",
+    "images": [
+      "/images/mock_student_equipment.png"
+    ],
+    "ratingAverage": 4.1
+  },
+  {
+    "id": "i75jawd4emj",
+    "createdAt": "2026-08-07T10:33:41.131Z",
+    "updatedAt": "2026-08-07T10:33:41.131Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "DHT11 Temperature & Humidity Sensor",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality DHT11 Temperature & Humidity Sensor available for college students. Pick up from CS Lab 2.",
+    "type": "Physical Item",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 5,
+    "location": "CS Lab 2",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 3.6
+  },
+  {
+    "id": "2vjz6uh4emk",
+    "createdAt": "2026-08-07T10:33:41.132Z",
+    "updatedAt": "2026-08-07T10:33:41.132Z",
+    "ownerId": "uawfqdg4em2",
+    "ownerName": "Ananya Sharma",
+    "name": "Digital Oscilloscope Probe (100MHz)",
+    "category": "Tools",
+    "description": "Premium high-quality Digital Oscilloscope Probe (100MHz) available for college students. Pick up from ECE Lab 4.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 7,
+    "location": "ECE Lab 4",
+    "images": [
+      "/images/mock_tools.png"
+    ],
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "1rougjc4emm",
+    "createdAt": "2026-08-07T10:33:41.134Z",
+    "updatedAt": "2026-08-07T10:33:41.134Z",
+    "ownerId": "ffc1ai84em6",
+    "ownerName": "Kabir Verma",
+    "name": "ESP8266 NodeMCU Board",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality ESP8266 NodeMCU Board available for college students. Pick up from Hostel A Room 211.",
+    "type": "Physical Item",
+    "condition": "Used",
+    "availability": "available",
+    "lendingDuration": 10,
+    "location": "Hostel A Room 211",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.8
+  },
+  {
+    "id": "mtlsb714emo",
+    "createdAt": "2026-08-07T10:33:41.136Z",
+    "updatedAt": "2026-08-07T10:33:41.136Z",
+    "ownerId": "klbtyxe4em7",
+    "ownerName": "Siddharth Sen",
+    "name": "Engineering Thermodynamics by PK Nag",
+    "category": "Books",
+    "description": "Premium high-quality Engineering Thermodynamics by PK Nag available for college students. Pick up from Library Cafe.",
+    "type": "Physical Item",
+    "condition": "Used",
+    "availability": "borrowed",
+    "lendingDuration": 14,
+    "location": "Library Cafe",
+    "images": [
+      "/images/mock_books.png"
+    ],
+    "ratingAverage": 3.6
+  },
+  {
+    "id": "pu8u69t4emp",
+    "createdAt": "2026-08-07T10:33:41.137Z",
+    "updatedAt": "2026-08-07T10:33:41.137Z",
+    "ownerId": "kphm8l44em8",
+    "ownerName": "Meera Joshi",
+    "name": "Set of Drawing Instruments",
+    "category": "Student Equipment",
+    "description": "Premium high-quality Set of Drawing Instruments available for college students. Pick up from Hostel C Room 104.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 7,
+    "location": "Hostel C Room 104",
+    "images": [
+      "/images/mock_student_equipment.png"
+    ],
+    "ratingAverage": 3.7
+  },
+  {
+    "id": "rpygpwi4emq",
+    "createdAt": "2026-08-07T10:33:41.138Z",
+    "updatedAt": "2026-08-07T10:33:41.138Z",
+    "ownerId": "z4oaevh4em5",
+    "ownerName": "Diya Patel",
+    "name": "Micro SD Card 32GB",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Micro SD Card 32GB available for college students. Pick up from Hostel A Room 405.",
+    "type": "Physical Item",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 10,
+    "location": "Hostel A Room 405",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "865pv0e4emq",
+    "createdAt": "2026-08-07T10:33:41.138Z",
+    "updatedAt": "2026-08-07T10:33:41.138Z",
+    "ownerId": "o8ifxhd4em7",
+    "ownerName": "Isha Nair",
+    "name": "Standard Breadboard Power Supply Module",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Standard Breadboard Power Supply Module available for college students. Pick up from ECE Lab.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 5,
+    "location": "ECE Lab",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.4
+  },
+  {
+    "id": "qypdd5x4emq",
+    "createdAt": "2026-08-07T10:33:41.138Z",
+    "updatedAt": "2026-08-07T10:33:41.138Z",
+    "ownerId": "i4t08834em6",
+    "ownerName": "Rohan Gupta",
+    "name": "Higher Engineering Mathematics by BS Grewal",
+    "category": "Books",
+    "description": "Premium high-quality Higher Engineering Mathematics by BS Grewal available for college students. Pick up from Hostel B Room 220.",
+    "type": "Physical Item",
+    "condition": "Good",
+    "availability": "available",
+    "lendingDuration": 20,
+    "location": "Hostel B Room 220",
+    "images": [
+      "/images/mock_books.png"
+    ],
+    "ratingAverage": 4.7
+  },
+  {
+    "id": "hi2jgg04emr",
+    "createdAt": "2026-08-07T10:33:41.139Z",
+    "updatedAt": "2026-08-07T10:33:41.139Z",
+    "ownerId": "uawfqdg4em2",
+    "ownerName": "Ananya Sharma",
+    "name": "Intel Galileo Gen 2 Board",
+    "category": "Electronics & IoT",
+    "description": "Premium high-quality Intel Galileo Gen 2 Board available for college students. Pick up from CS Lab 2.",
+    "type": "Physical Item",
+    "condition": "Fair",
+    "availability": "available",
+    "lendingDuration": 14,
+    "location": "CS Lab 2",
+    "images": [
+      "/images/mock_electronics___iot.png"
+    ],
+    "ratingAverage": 4.4
+  },
+  {
+    "id": "m30gxhp4ems",
+    "createdAt": "2026-08-07T10:33:41.140Z",
+    "updatedAt": "2026-08-07T10:33:41.140Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "Computer Networks Lecture Notes (Unit 1-5)",
+    "category": "Study Materials",
+    "subCategory": "Notes",
+    "description": "Complete Notes covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_computer_networks_lecture_notes__unit_____.pdf",
+    "ratingAverage": 4.8
+  },
+  {
+    "id": "7drzlf54emt",
+    "createdAt": "2026-08-07T10:33:41.141Z",
+    "updatedAt": "2026-08-07T10:33:41.141Z",
+    "ownerId": "uawfqdg4em2",
+    "ownerName": "Ananya Sharma",
+    "name": "Microprocessor & Microcontroller Lab Manual",
+    "category": "Study Materials",
+    "subCategory": "Lab Manuals",
+    "description": "Complete Lab Manuals covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_microprocessor___microcontroller_lab_manual.pdf",
+    "ratingAverage": 4.2
+  },
+  {
+    "id": "z53nfpu4emw",
+    "createdAt": "2026-08-07T10:33:41.144Z",
+    "updatedAt": "2026-08-07T10:33:41.144Z",
+    "ownerId": "uawfqdg4em2",
+    "ownerName": "Ananya Sharma",
+    "name": "Digital Signal Processing PPT Slides",
+    "category": "Study Materials",
+    "subCategory": "PPTs",
+    "description": "Complete PPTs covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_digital_signal_processing_ppt_slides.pdf",
+    "ratingAverage": 4.8
+  },
+  {
+    "id": "6c2c4vn4emy",
+    "createdAt": "2026-08-07T10:33:41.146Z",
+    "updatedAt": "2026-08-07T10:33:41.146Z",
+    "ownerId": "z4oaevh4em5",
+    "ownerName": "Diya Patel",
+    "name": "GATE CSE 2024 Solved Answer Key & Explanations",
+    "category": "Study Materials",
+    "subCategory": "Previous Year Papers",
+    "description": "Complete Previous Year Papers covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_gate_cse______solved_answer_key___explanations.pdf",
+    "ratingAverage": 4
+  },
+  {
+    "id": "om50cnu4emz",
+    "createdAt": "2026-08-07T10:33:41.147Z",
+    "updatedAt": "2026-08-07T10:33:41.147Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "Database Management Systems Assignment 2 (SQL)",
+    "category": "Study Materials",
+    "subCategory": "Assignments",
+    "description": "Complete Assignments covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_database_management_systems_assignment____sql_.pdf",
+    "ratingAverage": 4.8
+  },
+  {
+    "id": "5s8ssyg4en3",
+    "createdAt": "2026-08-07T10:33:41.151Z",
+    "updatedAt": "2026-08-07T10:33:41.151Z",
+    "ownerId": "o8ifxhd4em7",
+    "ownerName": "Isha Nair",
+    "name": "Data Structures Lab Notes (C++)",
+    "category": "Study Materials",
+    "subCategory": "Notes",
+    "description": "Complete Notes covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_data_structures_lab_notes__c___.pdf",
+    "ratingAverage": 4.6
+  },
+  {
+    "id": "ruzfzo14en4",
+    "createdAt": "2026-08-07T10:33:41.152Z",
+    "updatedAt": "2026-08-07T10:33:41.152Z",
+    "ownerId": "ffc1ai84em6",
+    "ownerName": "Kabir Verma",
+    "name": "Theory of Computation Mock Exams",
+    "category": "Study Materials",
+    "subCategory": "Assignments",
+    "description": "Complete Assignments covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_theory_of_computation_mock_exams.pdf",
+    "ratingAverage": 4
+  },
+  {
+    "id": "svv3tnq4en5",
+    "createdAt": "2026-08-07T10:33:41.153Z",
+    "updatedAt": "2026-08-07T10:33:41.153Z",
+    "ownerId": "wunymtz4em6",
+    "ownerName": "Neha Reddy",
+    "name": "Compiler Design PPT Overview",
+    "category": "Study Materials",
+    "subCategory": "PPTs",
+    "description": "Complete PPTs covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_compiler_design_ppt_overview.pdf",
+    "ratingAverage": 4.2
+  },
+  {
+    "id": "f8cy4qi4en5",
+    "createdAt": "2026-08-07T10:33:41.153Z",
+    "updatedAt": "2026-08-07T10:33:41.153Z",
+    "ownerId": "kphm8l44em8",
+    "ownerName": "Meera Joshi",
+    "name": "Physics I Lab Manual (Optics & Laser)",
+    "category": "Study Materials",
+    "subCategory": "Lab Manuals",
+    "description": "Complete Lab Manuals covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_physics_i_lab_manual__optics___laser_.pdf",
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "qxr1vva4en6",
+    "createdAt": "2026-08-07T10:33:41.154Z",
+    "updatedAt": "2026-08-07T10:33:41.154Z",
+    "ownerId": "o8ifxhd4em7",
+    "ownerName": "Isha Nair",
+    "name": "GATE ECE 2023 Solved Paper",
+    "category": "Study Materials",
+    "subCategory": "Previous Year Papers",
+    "description": "Complete Previous Year Papers covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_gate_ece______solved_paper.pdf",
+    "ratingAverage": 4.1
+  },
+  {
+    "id": "gkycvfo4en9",
+    "createdAt": "2026-08-07T10:33:41.157Z",
+    "updatedAt": "2026-08-07T10:33:41.157Z",
+    "ownerId": "z4oaevh4em5",
+    "ownerName": "Diya Patel",
+    "name": "Web Technology Project Report & Code Structure",
+    "category": "Study Materials",
+    "subCategory": "Notes",
+    "description": "Complete Notes covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_web_technology_project_report___code_structure.pdf",
+    "ratingAverage": 4.7
+  },
+  {
+    "id": "7l3a2xc4enb",
+    "createdAt": "2026-08-07T10:33:41.159Z",
+    "updatedAt": "2026-08-07T10:33:41.159Z",
+    "ownerId": "9450j5m4em0",
+    "ownerName": "Aarav Mehta",
+    "name": "Operating Systems Semestral Assignments",
+    "category": "Study Materials",
+    "subCategory": "Assignments",
+    "description": "Complete Assignments covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_operating_systems_semestral_assignments.pdf",
+    "ratingAverage": 4.2
+  },
+  {
+    "id": "ijq7h7x4enc",
+    "createdAt": "2026-08-07T10:33:41.160Z",
+    "updatedAt": "2026-08-07T10:33:41.160Z",
+    "ownerId": "kphm8l44em8",
+    "ownerName": "Meera Joshi",
+    "name": "Power Systems Lab Instruction Manual",
+    "category": "Study Materials",
+    "subCategory": "Lab Manuals",
+    "description": "Complete Lab Manuals covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_power_systems_lab_instruction_manual.pdf",
+    "ratingAverage": 4.5
+  },
+  {
+    "id": "gcflogj4enc",
+    "createdAt": "2026-08-07T10:33:41.160Z",
+    "updatedAt": "2026-08-07T10:33:41.160Z",
+    "ownerId": "i4t08834em6",
+    "ownerName": "Rohan Gupta",
+    "name": "Environmental Science PPT presentation",
+    "category": "Study Materials",
+    "subCategory": "PPTs",
+    "description": "Complete PPTs covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_environmental_science_ppt_presentation.pdf",
+    "ratingAverage": 4.3
+  },
+  {
+    "id": "nohjgz74end",
+    "createdAt": "2026-08-07T10:33:41.161Z",
+    "updatedAt": "2026-08-07T10:33:41.161Z",
+    "ownerId": "kphm8l44em8",
+    "ownerName": "Meera Joshi",
+    "name": "Control Systems Handwritten Revision Notes",
+    "category": "Study Materials",
+    "subCategory": "Notes",
+    "description": "Complete Notes covering course curriculum. Approved by subject instructors.",
+    "type": "Digital Resource",
+    "condition": "New",
+    "availability": "available",
+    "lendingDuration": 0,
+    "location": "Online Download",
+    "images": [
+      "/images/mock_digital.png"
+    ],
+    "fileUrl": "/files/mock_control_systems_handwritten_revision_notes.pdf",
+    "ratingAverage": 4
+  }
+]

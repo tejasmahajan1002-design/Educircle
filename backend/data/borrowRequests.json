@@ -1,0 +1,86 @@
+[
+  {
+    "id": "7hcjmov4eni",
+    "createdAt": "2026-08-07T10:33:41.166Z",
+    "updatedAt": "2026-08-07T10:33:41.166Z",
+    "resourceId": "ut0dzcz4emc",
+    "requesterId": "klbtyxe4em7",
+    "borrowDate": "2026-07-23T10:33:41.165Z",
+    "returnDate": "2026-08-02T10:33:41.165Z",
+    "purpose": "Developing an IoT based weather monitoring project for smart cities.",
+    "agreementAccepted": true,
+    "status": "approved"
+  },
+  {
+    "id": "tkp08ao4enp",
+    "createdAt": "2026-08-07T10:33:41.173Z",
+    "updatedAt": "2026-08-07T10:33:41.173Z",
+    "resourceId": "qrshmv64emd",
+    "requesterId": "68hhhf94em4",
+    "borrowDate": "2026-07-14T10:33:41.172Z",
+    "returnDate": "2026-07-28T10:33:41.172Z",
+    "purpose": "Mini project on face recognition attendance system.",
+    "agreementAccepted": true,
+    "status": "approved"
+  },
+  {
+    "id": "q6nas5o4enw",
+    "createdAt": "2026-08-07T10:33:41.180Z",
+    "updatedAt": "2026-08-07T10:33:41.180Z",
+    "resourceId": "mtlsb714emo",
+    "requesterId": "68hhhf94em4",
+    "borrowDate": "2026-07-21T10:33:41.179Z",
+    "returnDate": "2026-08-04T10:33:41.179Z",
+    "purpose": "Preparing for mechanical mid-sem exams.",
+    "agreementAccepted": true,
+    "status": "approved"
+  },
+  {
+    "id": "i2yuluq4eo1",
+    "createdAt": "2026-08-07T10:33:41.185Z",
+    "updatedAt": "2026-08-07T10:33:41.185Z",
+    "resourceId": "6oc20wm4emh",
+    "requesterId": "9450j5m4em0",
+    "borrowDate": "2026-08-06T10:33:41.184Z",
+    "returnDate": "2026-08-09T10:33:41.184Z",
+    "purpose": "Need to solder jumper pins onto ESP8266.",
+    "agreementAccepted": true,
+    "status": "approved"
+  },
+  {
+    "id": "8yrmp5m4eo6",
+    "createdAt": "2026-08-07T10:33:41.190Z",
+    "updatedAt": "2026-08-07T10:33:41.190Z",
+    "resourceId": "f57ytcx4emd",
+    "requesterId": "uawfqdg4em2",
+    "borrowDate": "2026-07-30T10:33:41.188Z",
+    "returnDate": "2026-08-03T10:33:41.188Z",
+    "purpose": "Exams prep.",
+    "agreementAccepted": true,
+    "status": "returned"
+  },
+  {
+    "id": "hyfs1y84eoc",
+    "createdAt": "2026-08-07T10:33:41.196Z",
+    "updatedAt": "2026-08-07T10:33:41.196Z",
+    "resourceId": "wdxfzet4emb",
+    "requesterId": "ffc1ai84em6",
+    "borrowDate": "2026-08-08T10:33:41.195Z",
+    "returnDate": "2026-08-15T10:33:41.195Z",
+    "purpose": "Embedded systems lab project.",
+    "agreementAccepted": true,
+    "status": "requested"
+  },
+  {
+    "id": "wrz6goy4eog",
+    "createdAt": "2026-08-07T10:33:41.200Z",
+    "updatedAt": "2026-08-07T10:33:41.200Z",
+    "resourceId": "f57ytcx4emd",
+    "requesterId": "i4t08834em6",
+    "borrowDate": "2026-08-09T10:33:41.198Z",
+    "returnDate": "2026-08-14T10:33:41.198Z",
+    "purpose": "Probability and Statistics Mid-sem test.",
+    "agreementAccepted": true,
+    "status": "requested"
+  }
+]

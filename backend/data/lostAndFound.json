@@ -1,0 +1,30 @@
+[
+  {
+    "id": "3eqwck44ep3",
+    "createdAt": "2026-08-07T10:33:41.223Z",
+    "updatedAt": "2026-08-07T10:33:41.223Z",
+    "posterId": "9450j5m4em0",
+    "posterName": "Aarav Mehta",
+    "title": "Found Black Leather Keyholder",
+    "description": "Found near the Library entrance steps around 4 PM. Has 3 keys and a small blue tag.",
+    "image": "",
+    "date": "2026-08-05",
+    "type": "found",
+    "generalLocation": "Library Entrance steps",
+    "status": "open"
+  },
+  {
+    "id": "irv817j4ep7",
+    "createdAt": "2026-08-07T10:33:41.227Z",
+    "updatedAt": "2026-08-07T10:33:41.227Z",
+    "posterId": "wunymtz4em6",
+    "posterName": "Neha Reddy",
+    "title": "Lost Parker Fountain Pen",
+    "description": "Lost my silver-plated Parker fountain pen. Probably left it in CS Seminar Hall during morning class.",
+    "image": "",
+    "date": "2026-08-06",
+    "type": "lost",
+    "generalLocation": "CS Seminar Hall",
+    "status": "open"
+  }
+]

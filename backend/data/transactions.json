@@ -1,0 +1,68 @@
+[
+  {
+    "id": "11e9x5f4enn",
+    "createdAt": "2026-08-07T10:33:41.171Z",
+    "updatedAt": "2026-08-07T10:33:41.171Z",
+    "requestId": "7hcjmov4eni",
+    "resourceId": "ut0dzcz4emc",
+    "borrowerId": "klbtyxe4em7",
+    "ownerId": "uawfqdg4em2",
+    "borrowDate": "2026-07-23T10:33:41.169Z",
+    "expectedReturnDate": "2026-08-02T10:33:41.169Z",
+    "status": "overdue",
+    "qrToken": "qr_tx_6rpm7"
+  },
+  {
+    "id": "g3p46ha4enq",
+    "createdAt": "2026-08-07T10:33:41.174Z",
+    "updatedAt": "2026-08-07T10:33:41.174Z",
+    "requestId": "tkp08ao4enp",
+    "resourceId": "qrshmv64emd",
+    "borrowerId": "68hhhf94em4",
+    "ownerId": "wunymtz4em6",
+    "borrowDate": "2026-07-14T10:33:41.174Z",
+    "expectedReturnDate": "2026-07-28T10:33:41.174Z",
+    "status": "overdue",
+    "qrToken": "qr_tx_9d72h"
+  },
+  {
+    "id": "e2hku0b4enx",
+    "createdAt": "2026-08-07T10:33:41.181Z",
+    "updatedAt": "2026-08-07T10:33:41.182Z",
+    "requestId": "q6nas5o4enw",
+    "resourceId": "mtlsb714emo",
+    "borrowerId": "68hhhf94em4",
+    "ownerId": "klbtyxe4em7",
+    "borrowDate": "2026-07-21T10:33:41.181Z",
+    "expectedReturnDate": "2026-08-04T10:33:41.181Z",
+    "status": "overdue",
+    "qrToken": "qr_tx_ud975"
+  },
+  {
+    "id": "in3dt164eo3",
+    "createdAt": "2026-08-07T10:33:41.187Z",
+    "updatedAt": "2026-08-12T18:30:09.752Z",
+    "requestId": "i2yuluq4eo1",
+    "resourceId": "6oc20wm4emh",
+    "borrowerId": "9450j5m4em0",
+    "ownerId": "68hhhf94em4",
+    "borrowDate": "2026-08-06T10:33:41.187Z",
+    "expectedReturnDate": "2026-08-09T10:33:41.187Z",
+    "status": "overdue",
+    "qrToken": "qr_tx_xizqq"
+  },
+  {
+    "id": "ve3oaes4eoa",
+    "createdAt": "2026-08-07T10:33:41.194Z",
+    "updatedAt": "2026-08-07T10:33:41.194Z",
+    "requestId": "8yrmp5m4eo6",
+    "resourceId": "f57ytcx4emd",
+    "borrowerId": "uawfqdg4em2",
+    "ownerId": "z4oaevh4em5",
+    "borrowDate": "2026-07-30T10:33:41.193Z",
+    "expectedReturnDate": "2026-08-03T10:33:41.193Z",
+    "actualReturnDate": "2026-08-03T10:33:41.193Z",
+    "status": "returned",
+    "qrToken": "qr_tx_u8ufz"
+  }
+]

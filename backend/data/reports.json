@@ -1,0 +1,28 @@
+[
+  {
+    "id": "9sjc9no4epb",
+    "createdAt": "2026-08-07T10:33:41.231Z",
+    "updatedAt": "2026-08-07T10:33:41.231Z",
+    "reporterId": "uawfqdg4em2",
+    "reporterName": "Ananya Sharma",
+    "targetId": "hi2jgg04emr",
+    "targetName": "Intel Galileo Gen 2 Board",
+    "targetType": "resource",
+    "reason": "Listing displays functional product images but owner mentioned it has broken power circuits.",
+    "status": "pending",
+    "actionTaken": ""
+  },
+  {
+    "id": "z9ocv924epe",
+    "createdAt": "2026-08-07T10:33:41.234Z",
+    "updatedAt": "2026-08-07T10:33:41.234Z",
+    "reporterId": "wunymtz4em6",
+    "reporterName": "Neha Reddy",
+    "targetId": "68hhhf94em4",
+    "targetName": "Vikram Singh",
+    "targetType": "user",
+    "reason": "Vikram has been keeping my Raspberry Pi for over 10 days post due date, ignoring messages.",
+    "status": "pending",
+    "actionTaken": ""
+  }
+]
