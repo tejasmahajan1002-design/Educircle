@@ -686,9 +686,6 @@
               </div>
 
               <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800/50 text-center space-y-4">
-                <div class="p-3.5 rounded-2xl bg-amber-500/5 dark:bg-amber-950/20 border border-amber-500/10 text-[10px] text-amber-700 dark:text-amber-400">
-                  ⚡ Admin Bypass: <strong class="font-mono">admin@campushare.edu</strong> / <strong class="font-mono">admin123</strong>
-                </div>
                 <p class="text-[11px] text-slate-500">
                   Don't have a verified account? <span onclick="App.navigateTo('register')" class="text-brand-600 dark:text-brand-400 font-bold cursor-pointer hover:underline">Create profile</span>
                 </p>
@@ -732,7 +729,7 @@
           return;
         }
 
-        const isCorrectPassword = (match.role === 'admin' && pass === 'admin123') || (match.role === 'student' && pass === match.password);
+        const isCorrectPassword = pass === match.password;
         if (!isCorrectPassword) {
           showToast('Incorrect password.', 'error');
           return;
