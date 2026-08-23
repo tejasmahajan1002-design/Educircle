@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../models/db');
 const { authenticate, authorizeAdmin, JWT_SECRET } = require('../middleware/auth');
 const { sendVerificationEmail, sendResetPasswordEmail } = require('../services/emailService');
+const STUDENT_DIRECTORY = require('../services/studentDirectory');
 
 const router = express.Router();
 
@@ -13,9 +14,9 @@ const router = express.Router();
 
 // Register Student with OTP
 router.post('/auth/register', async (req, res) => {
-  const { name, email, mobileNumber, rollNumber, department, year, semester, password, confirmPassword } = req.body;
+  const { name, zprn, mobileNumber, department, year, semester, password, confirmPassword } = req.body;
 
-  if (!name || !email || !mobileNumber || !rollNumber || !department || !year || !semester || !password || !confirmPassword) {
+  if (!name || !zprn || !mobileNumber || !department || !year || !semester || !password || !confirmPassword) {
     return res.status(400).json({ message: 'All registration fields are required.' });
   }
 
@@ -27,8 +28,16 @@ router.post('/auth/register', async (req, res) => {
     return res.status(400).json({ message: 'Valid 10-digit mobile number is required.' });
   }
 
+  // Lookup email from studentDirectory
+  const student = STUDENT_DIRECTORY.find(s => s.zprn.toUpperCase() === zprn.toUpperCase());
+  if (!student) {
+    return res.status(400).json({ message: 'Invalid ZPRN Number. Only ECE students are allowed to register.' });
+  }
+  const email = student.email.toLowerCase();
+  const rollNumber = zprn.toUpperCase();
+
   // Check duplicate verified email
-  const existingUser = db.users.findOne({ email: email.toLowerCase() });
+  const existingUser = db.users.findOne({ email });
   if (existingUser && existingUser.emailVerified) {
     return res.status(400).json({ message: 'An active verified account with this email already exists.' });
   }
