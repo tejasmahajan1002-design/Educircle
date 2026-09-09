@@ -7,11 +7,11 @@ A full-stack, secure, authenticated peer-to-peer web platform for college studen
 ## 🚀 Quick Access Links
 
 * **Open Web Application Directly (Browser)**:  
-  👉 [`file:///C:/PROJECT%201/index.html`](file:///C:/PROJECT%201/index.html)  
+  👉 [`file:///D:/PROJECT%201/index.html`](file:///D:/PROJECT%201/index.html)  
   *(Alternatively, double-click `open_website.bat` in this folder)*
 
 * **Frontend Directory Location**:  
-  👉 [`file:///C:/PROJECT%201/frontend/index.html`](file:///C:/PROJECT%201/frontend/index.html)
+  👉 [`file:///D:/PROJECT%201/frontend/index.html`](file:///D:/PROJECT%201/frontend/index.html)
 
 * **Backend Real-Time API Server**:  
   👉 `http://localhost:5000` (Start via `start_backend.bat`)
@@ -24,7 +24,7 @@ A full-stack, secure, authenticated peer-to-peer web platform for college studen
 ## 📁 Organized Project Structure
 
 ```
-C:\PROJECT 1\
+D:\PROJECT 1\
 ├── frontend\                      # Frontend UI & Web Application
 │   ├── index.html                 # Primary CampusShare Single-Page Web App
 │   ├── campushare_app.html        # Backup Standalone Web App

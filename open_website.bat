@@ -1,4 +1,4 @@
 @echo off
 echo Opening CampusShare Website in your browser...
-start " \ \%~dp0index.html\
+start "" "%~dp0index.html"
 exit
