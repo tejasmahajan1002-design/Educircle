@@ -115,7 +115,8 @@
   <!-- Standalone Application Logic -->
   <script>
     const INITIAL_USERS = [
-      { id: 'u_admin', name: 'Campus Administrator', email: 'admin@campushare.edu', mobileNumber: '9999999999', rollNumber: 'ADMIN01', department: 'Administration', year: 'N/A', semester: 'N/A', password: 'admin123', role: 'admin', trustScore: 100, ratingAverage: 5.0, status: 'active', emailVerified: true }
+      { id: 'u_admin', name: 'Campus Administrator', email: 'admin@campushare.edu', mobileNumber: '9999999999', rollNumber: 'ADMIN01', zprn: 'ADMIN01', department: 'Administration', year: 'N/A', semester: 'N/A', password: 'admin123', role: 'admin', trustScore: 100, ratingAverage: 5.0, status: 'active', emailVerified: true },
+      { id: 'u_student_tejas', name: 'Tejas Kishorkumar Mahajan', email: 'tejasmahajan1002@gmail.com', mobileNumber: '9876543210', rollNumber: '125UEC1077', zprn: '125UEC1077', department: 'Electronics & Telecommunication', year: '2nd Year', semester: 'Semester 4', password: 'student123', role: 'student', trustScore: 92, ratingAverage: 4.9, status: 'active', emailVerified: true }
     ];
 
     const STUDENT_DIRECTORY = [
@@ -297,7 +298,10 @@
             const parsed = JSON.parse(cached);
             this.currentUser = parsed.currentUser || null;
             this.users = parsed.users || INITIAL_USERS;
-            this.resources = parsed.resources || [];
+            if (!this.users.some(u => u.email === 'tejasmahajan1002@gmail.com')) {
+              this.users.push(INITIAL_USERS[1]);
+            }
+            this.resources = parsed.resources && parsed.resources.length > 0 ? parsed.resources : [];
             this.transactions = parsed.transactions || [];
             this.notifications = parsed.notifications || [];
             this.messages = parsed.messages || [];
@@ -307,6 +311,11 @@
             this.exchangeRequests = parsed.exchangeRequests || [];
             this.ratings = parsed.ratings || [];
             this.pendingRegistrations = parsed.pendingRegistrations || [];
+
+            if (this.resources.length === 0) {
+              this.resetToInitial();
+              return;
+            }
           } catch(e) {
             this.resetToInitial();
           }
@@ -318,9 +327,100 @@
       resetToInitial() {
         this.currentUser = null;
         this.users = INITIAL_USERS;
-        this.resources = [];
-        this.transactions = [];
-        this.notifications = [];
+        this.resources = [
+          {
+            id: 'res_1',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            name: 'Casio fx-991EX ClassWiz Scientific Calculator',
+            category: 'Electronics & IoT',
+            type: 'Physical Item',
+            condition: 'Like New',
+            listingMethod: 'rent',
+            itemValue: 1200,
+            price: 20,
+            quantity: 2,
+            availableQuantity: 2,
+            availability: 'available',
+            description: 'Standard engineering calculator with high-resolution LCD display and matrix calculations.'
+          },
+          {
+            id: 'res_2',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            name: 'Arduino Uno R3 Starter Kit with Sensors',
+            category: 'Electronics & IoT',
+            type: 'Physical Item',
+            condition: 'Good',
+            listingMethod: 'exchange',
+            swapPreferences: 'ESP32 / Raspberry Pi',
+            itemValue: 2500,
+            price: 0,
+            quantity: 1,
+            availableQuantity: 1,
+            availability: 'available',
+            description: 'Complete kit with breadboard, jumper wires, ultrasonic sensor, servo motor, and LCD.'
+          },
+          {
+            id: 'res_3',
+            ownerId: 'u_admin',
+            ownerName: 'Campus Resource Center',
+            name: 'Digital Signal Processing (Proakis & Manolakis)',
+            category: 'Books',
+            type: 'Physical Item',
+            condition: 'Good',
+            listingMethod: 'rent',
+            itemValue: 850,
+            price: 15,
+            quantity: 3,
+            availableQuantity: 3,
+            availability: 'available',
+            description: 'Essential textbook for 4th semester ECE signal processing course.'
+          }
+        ];
+        this.transactions = [
+          {
+            id: 'tx_demo_1',
+            resourceId: 'res_demo_prev',
+            resourceName: 'Texas Instruments TI-84 Plus CE Graphing Calculator',
+            ownerId: 'u_admin',
+            ownerName: 'Campus Resource Center',
+            borrowerId: 'u_student_tejas',
+            borrowerName: 'Tejas Mahajan',
+            txType: 'rent',
+            status: 'Returned',
+            borrowDate: '2026-08-10',
+            expectedReturnDate: '2026-08-17',
+            actualReturnDate: '2026-08-16',
+            securityDeposit: 500,
+            depositStatus: 'Released',
+            updatedAt: '2026-08-16T14:30:00Z'
+          },
+          {
+            id: 'tx_demo_2',
+            resourceId: 'res_demo_swap',
+            resourceName: 'Signals & Systems (Oppenheim 2nd Ed.)',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            borrowerId: 'u_admin',
+            borrowerName: 'Pooja Sharma',
+            txType: 'exchange',
+            status: 'Returned',
+            ownerHandedOver: true,
+            borrowerHandedOver: true,
+            updatedAt: '2026-08-20T11:00:00Z'
+          }
+        ];
+        this.notifications = [
+          {
+            id: 'n_welcome',
+            userId: 'u_student_tejas',
+            content: '🎉 Welcome to Educircle! Your verified ECE profile is active with +92 Trust Standing.',
+            type: 'system',
+            createdAt: new Date().toISOString(),
+            isRead: false
+          }
+        ];
         this.messages = [];
         this.reports = [];
         this.lostAndFound = [];
@@ -858,7 +958,20 @@
                   <button onclick="App.navigateTo('forgot_password')" class="text-brand-500 font-bold hover:underline cursor-pointer">Forgot Password?</button>
                 </div>
                 
-                <button onclick="App.handleLoginSubmit()" class="w-full py-4 bg-brand-600 text-white hover:bg-brand-700 font-bold rounded-2xl text-xs shadow-lg shadow-brand-500/25 transition-all hover:shadow-brand-500/35 cursor-pointer">Sign In</button>
+                <button onclick="App.handleLoginSubmit()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-bold rounded-2xl text-xs shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/35 cursor-pointer">Sign In</button>
+
+                <!-- Quick 1-Click Testing Buttons -->
+                <div class="pt-2">
+                  <span class="text-[10px] font-bold text-slate-400 block mb-2 text-center uppercase tracking-wider">Quick 1-Click Demo Testing</span>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="document.getElementById('login-email').value='tejasmahajan1002@gmail.com'; document.getElementById('login-password').value='student123'; App.handleLoginSubmit()" class="py-2.5 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] transition-all border border-emerald-500/30 flex items-center justify-center gap-1.5 cursor-pointer">
+                      <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Student Demo
+                    </button>
+                    <button type="button" onclick="document.getElementById('login-email').value='admin@campushare.edu'; document.getElementById('login-password').value='admin123'; App.handleLoginSubmit()" class="py-2.5 px-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-bold text-[11px] transition-all border border-blue-500/30 flex items-center justify-center gap-1.5 cursor-pointer">
+                      <i data-lucide="shield" class="w-3.5 h-3.5"></i> Admin Demo
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800/50 text-center space-y-4">
