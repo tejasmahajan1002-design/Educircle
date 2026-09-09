@@ -908,81 +908,27 @@
           <div class="max-w-lg mx-auto py-12 px-6 text-left">
             <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-2xl space-y-5">
               <h2 class="text-xl font-bold text-slate-900 dark:text-white text-center">Student Registration</h2>
-              <p class="text-xs text-slate-400 text-center mt-1">Join your campus sharing hub. Enter your ZPRN to automatically verify your college email.</p>
+              <p class="text-xs text-slate-400 text-center mt-1">Enter your ZPRN and password. Your student profile & verified email will be automatically detected.</p>
               
               <div class="space-y-4">
                 <div>
-                  <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Full Name *</label>
-                  <input type="text" id="reg-name" placeholder="E.g. Neil Roy" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
+                  <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">ZPRN Number *</label>
+                  <input type="text" id="reg-zprn" oninput="App.handleZprnPreview(this.value)" placeholder="E.g. 125UEC1077" class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-semibold focus:ring-1 focus:ring-brand-500 focus:outline-none uppercase tracking-wide">
+                  <div id="zprn-preview" class="hidden mt-2 p-2.5 rounded-xl border text-xs transition-all"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">ZPRN Number *</label>
-                    <input type="text" id="reg-zprn" placeholder="E.g. 125UEC1077" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Mobile Number *</label>
-                    <input type="tel" id="reg-mobile" placeholder="9876543210" maxlength="10" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
-                  </div>
-                </div>
-
-                <div>
-                  <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Department *</label>
-                  <select id="reg-dept" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
-                    <option>Artificial Intelligence and Data Science</option>
-                    <option>Artificial Intelligence and Machine Learning</option>
-                    <option>Civil Engineering</option>
-                    <option>Computer Engineering</option>
-                    <option>Electrical Engineering</option>
-                    <option>Electronics and Telecommunication Engineering</option>
-                    <option selected>Electronics and Computer Engineering</option>
-                    <option>Information Technology</option>
-                    <option>Mechanical Engineering</option>
-                    <option>Robotics and Automation Engineering</option>
-                    <option>Master of Business Administration (MBA)</option>
-                    <option>Master of Computer Applications (MCA)</option>
-                    <option>Post-graduate ME/MTech courses in select specialization</option>
-                  </select>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Academic Year</label>
-                    <select id="reg-year" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
-                      <option>1st Year</option>
-                      <option>2nd Year</option>
-                      <option>3rd Year</option>
-                      <option>4th Year</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Semester</label>
-                    <select id="reg-sem" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
-                      <option>1st Sem</option>
-                      <option>2nd Sem</option>
-                      <option>3rd Sem</option>
-                      <option>4th Sem</option>
-                      <option>5th Sem</option>
-                      <option>6th Sem</option>
-                      <option>7th Sem</option>
-                      <option>8th Sem</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Password *</label>
-                    <input type="password" id="reg-pass" placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
+                    <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Create Password *</label>
+                    <input type="password" id="reg-pass" placeholder="At least 6 characters" class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
                   </div>
                   <div>
                     <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2">Confirm Password *</label>
-                    <input type="password" id="reg-pass-confirm" placeholder="••••••••" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
+                    <input type="password" id="reg-pass-confirm" placeholder="Re-enter password" class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
                   </div>
                 </div>
 
-                <button onclick="App.handleRegisterSubmit()" class="w-full py-3.5 bg-brand-600 text-white hover:bg-brand-700 font-bold rounded-xl text-xs shadow-lg shadow-brand-500/25">Send 6-Digit Email Verification Code</button>
+                <button onclick="App.handleRegisterSubmit()" class="w-full py-3.5 bg-brand-600 text-white hover:bg-brand-700 font-bold rounded-xl text-xs shadow-lg shadow-brand-500/25 transition-all">Send 6-Digit Email Verification Code</button>
               </div>
 
               <div class="text-center text-xs mt-4">
@@ -993,35 +939,58 @@
         `;
       },
 
-      async handleRegisterSubmit() {
-        const name = document.getElementById('reg-name').value.trim();
-        const zprn = document.getElementById('reg-zprn').value.trim().toUpperCase();
-        const mobile = document.getElementById('reg-mobile').value.trim();
-        const dept = document.getElementById('reg-dept').value;
-        const year = document.getElementById('reg-year').value;
-        const sem = document.getElementById('reg-sem').value;
-        const pass = document.getElementById('reg-pass').value;
-        const passConfirm = document.getElementById('reg-pass-confirm').value;
+      handleZprnPreview(val) {
+        const preview = document.getElementById('zprn-preview');
+        if (!preview) return;
+        const zprn = (val || '').trim().toUpperCase();
+        if (!zprn) {
+          preview.className = 'hidden mt-2 p-2.5 rounded-xl border text-xs transition-all';
+          preview.innerHTML = '';
+          return;
+        }
+        const student = STUDENT_DIRECTORY.find(s => s.zprn.toUpperCase() === zprn);
+        if (student) {
+          preview.className = 'mt-2 p-2.5 rounded-xl border text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 flex items-center justify-between animate-fadeIn';
+          preview.innerHTML = `<span><strong>✓ Identified:</strong> ${student.name}</span><span class="opacity-75 text-[10px]">${student.email}</span>`;
+        } else if (zprn.length >= 6) {
+          preview.className = 'mt-2 p-2.5 rounded-xl border text-xs bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 flex items-center animate-fadeIn';
+          preview.innerHTML = `<span>⚠️ ZPRN not found in registered ECE student roster.</span>`;
+        } else {
+          preview.className = 'hidden mt-2 p-2.5 rounded-xl border text-xs transition-all';
+          preview.innerHTML = '';
+        }
+      },
 
-        if (!name || !zprn || !mobile || !pass || !passConfirm) {
-          showToast('Please fill all required registration fields.', 'error');
+      async handleRegisterSubmit() {
+        const zprnInput = document.getElementById('reg-zprn');
+        const passInput = document.getElementById('reg-pass');
+        const passConfirmInput = document.getElementById('reg-pass-confirm');
+
+        if (!zprnInput || !passInput || !passConfirmInput) return;
+
+        const zprn = zprnInput.value.trim().toUpperCase();
+        const pass = passInput.value;
+        const passConfirm = passConfirmInput.value;
+
+        if (!zprn || !pass || !passConfirm) {
+          showToast('Please enter your ZPRN and password.', 'error');
           return;
         }
 
-        // Search directory for ZPRN
+        // Automatically detect student name & email from roster
         const studentInfo = STUDENT_DIRECTORY.find(s => s.zprn.toUpperCase() === zprn);
         if (!studentInfo) {
-          showToast('Invalid ZPRN Number. Only ECE students are allowed to register.', 'error');
+          showToast('Invalid ZPRN Number. Only registered ECE students are allowed to register.', 'error');
           return;
         }
 
+        const name = studentInfo.name;
         const email = studentInfo.email.toLowerCase();
         const roll = zprn;
-
-        if (mobile.length < 10) {
-          showToast('Please enter a valid 10-digit mobile number.', 'error');
-          return;
-        }
+        const dept = 'Electronics and Computer Engineering';
+        const year = '1st Year';
+        const sem = '1st Sem';
+        const mobile = '';
 
         if (pass !== passConfirm) {
           showToast('Passwords do not match.', 'error');
@@ -1040,7 +1009,7 @@
           return;
         }
 
-        // Store pending unverified registration locally
+        // Store pending unverified registration locally with auto-detected profile
         const pendingUser = {
           id: 'u_' + Date.now().toString(36),
           name,
@@ -1071,9 +1040,9 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              name, zprn, mobileNumber: mobile,
-              department: dept, year, semester: sem,
-              password: pass, confirmPassword: passConfirm
+              zprn,
+              password: pass,
+              confirmPassword: passConfirm
             })
           });
           const data = await res.json();
@@ -1087,8 +1056,8 @@
           const simulatedOtp = '123456';
           pendingUser.otpHash = await hashString(simulatedOtp);
           stateObj.save();
-          console.log(`[SIMULATED REGISTRATION CODE for ${email}]: ${simulatedOtp}`);
-          showToast(`[SIMULATED] Since backend is offline, please enter the simulated OTP: ${simulatedOtp}`, 'warning');
+          console.log(`[SIMULATED REGISTRATION CODE for ${email} (${name})]: ${simulatedOtp}`);
+          showToast(`[SIMULATED] Server offline. Verification OTP for ${name} is ${simulatedOtp}`, 'warning');
           
           try {
             fetch('php_backend/register.php', {
@@ -1103,7 +1072,7 @@
           } catch(err) {}
         }
 
-        showToast(`6-Digit Verification code sent to ${email}! Check your inbox.`);
+        showToast(`6-Digit Verification code sent to ${email} for ${name}! Check your inbox.`);
         this.navigateTo('verify_email', { email });
       },
 

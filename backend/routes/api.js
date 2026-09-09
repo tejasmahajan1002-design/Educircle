@@ -12,29 +12,34 @@ const router = express.Router();
 // 1. AUTHENTICATION & PROFILE ROUTES
 // ==========================================
 
-// Register Student with OTP
+// Register Student with OTP (Only ZPRN & Password required; Name & Email auto-detected from directory)
 router.post('/auth/register', async (req, res) => {
-  const { name, zprn, mobileNumber, department, year, semester, password, confirmPassword } = req.body;
+  const { zprn, password, confirmPassword } = req.body;
 
-  if (!name || !zprn || !mobileNumber || !department || !year || !semester || !password || !confirmPassword) {
-    return res.status(400).json({ message: 'All registration fields are required.' });
+  if (!zprn || !password || !confirmPassword) {
+    return res.status(400).json({ message: 'ZPRN and passwords are required.' });
   }
 
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match.' });
   }
 
-  if (mobileNumber.length < 10) {
-    return res.status(400).json({ message: 'Valid 10-digit mobile number is required.' });
+  if (password.length < 6) {
+    return res.status(400).json({ message: 'Password must be at least 6 characters.' });
   }
 
-  // Lookup email from studentDirectory
-  const student = STUDENT_DIRECTORY.find(s => s.zprn.toUpperCase() === zprn.toUpperCase());
+  // Automatically detect student name & email from studentDirectory
+  const student = STUDENT_DIRECTORY.find(s => s.zprn.toUpperCase() === zprn.trim().toUpperCase());
   if (!student) {
-    return res.status(400).json({ message: 'Invalid ZPRN Number. Only ECE students are allowed to register.' });
+    return res.status(400).json({ message: 'Invalid ZPRN Number. Only registered ECE students are allowed to register.' });
   }
+  const name = student.name;
   const email = student.email.toLowerCase();
-  const rollNumber = zprn.toUpperCase();
+  const rollNumber = zprn.trim().toUpperCase();
+  const department = 'Electronics and Computer Engineering';
+  const year = '1st Year';
+  const semester = '1st Sem';
+  const mobileNumber = '';
 
   // Check duplicate verified email
   const existingUser = db.users.findOne({ email });
