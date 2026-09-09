@@ -557,6 +557,9 @@
           document.documentElement.classList.remove('dark');
         }
         stateObj.checkOverdueAndReminders();
+        if (stateObj.currentUser && this.currentView === 'home') {
+          this.currentView = 'dashboard';
+        }
         this.render();
       },
 
@@ -686,8 +689,15 @@
         else if (this.currentView === 'admin') viewTitle = 'Admin Dashboard';
 
         return `
-          <header class="fixed top-0 right-0 left-0 lg:left-64 h-16 z-30 border-b border-slate-200/80 dark:border-slate-800/85 bg-white dark:bg-slate-900 flex items-center justify-between px-8 shadow-sm">
-            <h1 class="text-lg font-bold text-slate-800 dark:text-white">${viewTitle}</h1>
+          <header class="fixed top-0 right-0 left-0 lg:left-64 h-16 z-30 border-b border-slate-200/80 dark:border-slate-800/85 bg-white dark:bg-slate-900 flex items-center justify-between px-6 lg:px-8 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2.5 cursor-pointer" onclick="App.navigateTo('dashboard')">
+                <img src="docs/logo_concept1_badge.jpg" alt="Educircle Logo" class="w-8 h-8 rounded-xl object-cover ring-2 ring-emerald-400/50 shadow-md">
+                <span class="text-sm font-black text-slate-850 dark:text-white hidden sm:inline">Educircle</span>
+              </div>
+              <span class="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+              <h1 class="text-base font-bold text-slate-800 dark:text-white">${viewTitle}</h1>
+            </div>
             
             <div class="flex items-center gap-6">
               <!-- Search simulation -->
@@ -790,12 +800,20 @@
 
         return `
           <aside class="fixed inset-y-0 left-0 z-20 hidden lg:flex flex-col w-64 bg-[#0b1329] border-r border-slate-850 text-slate-400">
-            <!-- Brand Header -->
-            <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-800/80 cursor-pointer" onclick="App.navigateTo('dashboard')">
-              <img src="docs/logo_concept1_badge.jpg" alt="Educircle Logo" class="w-9 h-9 rounded-xl shadow-lg border border-emerald-500/30 object-cover flex-shrink-0 hover-lift">
+            <!-- Brand Header in Top Left Corner -->
+            <div class="flex items-center gap-3.5 px-6 py-5 border-b border-slate-800/80 cursor-pointer bg-slate-900/40 hover:bg-slate-900/70 transition-colors" onclick="App.navigateTo('dashboard')">
+              <div class="relative flex-shrink-0">
+                <img src="docs/logo_concept1_badge.jpg" alt="Educircle Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-11 h-11 rounded-2xl shadow-xl border-2 border-emerald-400/60 object-cover hover:scale-105 transition-transform ring-4 ring-blue-500/20">
+                <div class="hidden w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 to-emerald-500 items-center justify-center text-white font-black text-sm shadow-xl border-2 border-emerald-400/60 ring-4 ring-blue-500/20">
+                  <i data-lucide="repeat" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-[#0b1329]" title="Active Online"></span>
+              </div>
               <div class="leading-tight">
-                <span class="text-base font-black text-white tracking-tight flex items-center gap-1.5">Educircle</span>
-                <span class="text-[9px] block text-emerald-400 font-bold tracking-widest uppercase">CampusShare</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-lg font-black text-white tracking-tight">Educircle</span>
+                </div>
+                <span class="text-[10px] block text-emerald-400 font-extrabold tracking-widest uppercase mt-0.5">CampusShare Hub</span>
               </div>
             </div>
 
@@ -841,7 +859,10 @@
       getScreenHtml() {
         const view = this.currentView;
         
-        if (view === 'home') return this.getHomeHtml();
+        if (view === 'home') {
+          if (stateObj.currentUser) return this.getDashboardHtml();
+          return this.getHomeHtml();
+        }
         if (view === 'login') return this.getLoginHtml();
         if (view === 'register') return this.getRegisterHtml();
         if (view === 'verify_email') return this.getVerifyEmailHtml();
