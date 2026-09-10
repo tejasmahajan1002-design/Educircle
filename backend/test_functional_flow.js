@@ -28,7 +28,7 @@ global.document = {
     focus: () => {},
     setSelectionRange: () => {}
   }),
-  createElement: () => ({ appendChild: () => {}, className: '', style: {} }),
+  createElement: () => ({ appendChild: () => {}, className: '', style: {}, remove: () => {} }),
   body: { appendChild: () => {} }
 };
 global.lucide = { createIcons: () => {} };
