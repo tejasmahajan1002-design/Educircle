@@ -316,12 +316,121 @@
               this.resetToInitial();
               return;
             }
+            if (!this.resources.some(r => r.name && r.name.includes('Mini Drafter'))) {
+              this.enrichWithSampleCatalog();
+            }
           } catch(e) {
             this.resetToInitial();
           }
         } else {
           this.resetToInitial();
         }
+      }
+
+      enrichWithSampleCatalog() {
+        const samples = [
+          {
+            id: 'res_sample_casio_cw',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            name: 'Casio fx-991CW ClassWiz Scientific Calculator',
+            category: 'Calculators',
+            type: 'Physical Item',
+            condition: 'Mint / Verified',
+            listingMethod: 'rent',
+            itemValue: 1400,
+            price: 25,
+            lendingDuration: 7,
+            quantity: 2,
+            availableQuantity: 2,
+            availability: 'available',
+            ratingAverage: 4.9,
+            sharesCount: 38,
+            location: 'ECE Department Lobby',
+            description: 'Latest approved non-programmable scientific calculator for university semester and practical lab exams.'
+          },
+          {
+            id: 'res_sample_drafter',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            name: 'Engineering Mini Drafter (Omega Pro)',
+            category: 'Drafters',
+            type: 'Physical Item',
+            condition: 'Excellent',
+            listingMethod: 'sell',
+            itemValue: 950,
+            price: 420,
+            quantity: 1,
+            availableQuantity: 1,
+            availability: 'available',
+            ratingAverage: 4.8,
+            sharesCount: 19,
+            location: 'Mechanical Drawing Hall / Hostel B',
+            description: 'Heavy-duty steel clamp mini drafter with unbroken scale. Perfect for Engineering Graphics & CAD courses.'
+          },
+          {
+            id: 'res_sample_labkit',
+            ownerId: 'u_student_tejas',
+            ownerName: 'Tejas Mahajan',
+            name: 'Electronics Multimeter & Breadboard Lab Kit',
+            category: 'Lab Gear',
+            type: 'Physical Item',
+            condition: 'Good',
+            listingMethod: 'exchange',
+            swapPreferences: '8051 Microcontroller / PIC Kit',
+            itemValue: 1800,
+            price: 0,
+            quantity: 1,
+            availableQuantity: 1,
+            availability: 'available',
+            ratingAverage: 5.0,
+            sharesCount: 27,
+            location: 'Electronics Lab 1',
+            description: 'Complete student kit: DT830D digital multimeter, 840-point breadboard, and 65 jumper wires with resistors.'
+          },
+          {
+            id: 'res_sample_mechanics',
+            ownerId: 'u_admin',
+            ownerName: 'Campus Resource Center',
+            name: 'Engineering Mechanics (Beer & Johnston)',
+            category: 'Books',
+            type: 'Physical Item',
+            condition: 'Like New',
+            listingMethod: 'rent',
+            itemValue: 750,
+            price: 15,
+            lendingDuration: 14,
+            quantity: 3,
+            availableQuantity: 3,
+            availability: 'available',
+            ratingAverage: 4.9,
+            sharesCount: 42,
+            location: 'Central Library Counter 2',
+            description: 'Standard textbook for 1st/2nd year engineering mechanics. Clean pages, no torn diagrams.'
+          },
+          {
+            id: 'res_sample_apron',
+            ownerId: 'u_admin',
+            ownerName: 'Campus Resource Center',
+            name: 'Cotton White Lab Coat & Safety Apron (Size M)',
+            category: 'Lab Gear',
+            type: 'Physical Item',
+            condition: 'Clean / Fresh',
+            listingMethod: 'rent',
+            itemValue: 450,
+            price: 10,
+            lendingDuration: 3,
+            quantity: 5,
+            availableQuantity: 5,
+            availability: 'available',
+            ratingAverage: 4.7,
+            sharesCount: 56,
+            location: 'Chemistry Lab Store',
+            description: '100% thick cotton white apron with deep front pockets. Required for Chemistry & ECE hardware labs.'
+          }
+        ];
+        this.resources.push(...samples);
+        this.save();
       }
 
       resetToInitial() {
@@ -549,6 +658,58 @@
       resendTimerInterval: null,
       resendCountdown: 0,
       exploreTab: 'all',
+      categoryFilter: 'all',
+      searchQuery: '',
+
+      setExploreTab(tab) {
+        this.exploreTab = tab;
+        this.render();
+      },
+
+      setCategoryFilter(cat) {
+        this.categoryFilter = cat;
+        this.render();
+      },
+
+      handleSearchInput(query) {
+        this.searchQuery = query;
+        this.render();
+        const input = document.getElementById('campus-search-input');
+        if (input) {
+          input.focus();
+          const len = input.value.length;
+          input.setSelectionRange(len, len);
+        }
+      },
+
+      topUpWallet(amount) {
+        const user = stateObj.currentUser;
+        if (!user) return;
+        user.walletBalance = (user.walletBalance !== undefined ? user.walletBalance : 1500) + amount;
+        stateObj.save();
+        showToast(`Successfully credited ₹${amount} to your Campus Trust Wallet!`, 'success');
+        this.render();
+      },
+
+      saveOwnerUpi(upiId) {
+        const user = stateObj.currentUser;
+        if (!user) return;
+        const cleanUpi = (upiId || '').trim();
+        if (!cleanUpi || !cleanUpi.includes('@')) {
+          showToast('Please enter a valid UPI ID (e.g. name@okhdfcbank or 9876543210@paytm)', 'error');
+          return;
+        }
+        user.ownerUpiId = cleanUpi;
+        stateObj.save();
+        showToast(`Owner Payout UPI ID saved: ${cleanUpi}`, 'success');
+        this.render();
+      },
+
+      openWhatsApp(ownerName, itemName, method) {
+        const cleanMethod = method || 'borrow';
+        const msg = encodeURIComponent(`Hi ${ownerName}, I saw your ${itemName} on Educircle for ${cleanMethod} and I'm interested. Can we meet near the campus lobby?`);
+        window.open(`https://wa.me/?text=${msg}`, '_blank');
+      },
 
       init() {
         if (this.theme === 'dark') {
@@ -599,12 +760,12 @@
         this.navigateTo('home');
       },
 
-      openModal(htmlContent) {
+      openModal(htmlContent, customMaxWidth = 'max-w-2xl') {
         const root = document.getElementById('modal-root');
         root.innerHTML = `
-          <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in" onclick="if(event.target === this) App.closeModal()">
-            <div class="glass-panel bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 text-left relative">
-              <button onclick="App.closeModal()" class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <div class="fixed inset-0 bg-slate-950/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 animate-fade-in" onclick="if(event.target === this) App.closeModal()">
+            <div class="glass-panel bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl ${customMaxWidth} w-full max-h-[92vh] overflow-y-auto p-5 sm:p-7 text-left relative">
+              <button onclick="App.closeModal()" class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer z-10">
                 <i data-lucide="x" class="w-5 h-5"></i>
               </button>
               ${htmlContent}
@@ -612,6 +773,32 @@
           </div>
         `;
         lucide.createIcons();
+      },
+
+      updateRentalCost(dailyRate, itemValue) {
+        const qtyEl = document.getElementById('req-quantity');
+        const dateEl = document.getElementById('req-return-date');
+        const daysEl = document.getElementById('calc-rental-days');
+        const rentSubtotalEl = document.getElementById('calc-rent-subtotal');
+        const depositEl = document.getElementById('calc-escrow-deposit');
+        const totalPayableEl = document.getElementById('calc-total-payable');
+
+        const qty = qtyEl ? Math.max(1, parseInt(qtyEl.value) || 1) : 1;
+        let days = 7;
+        if (dateEl && dateEl.value) {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const ret = new Date(dateEl.value);
+          ret.setHours(0, 0, 0, 0);
+          const diffTime = ret - today;
+          days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        }
+        if (daysEl) daysEl.innerText = `${days} day${days > 1 ? 's' : ''}`;
+        const rentSubtotal = qty * dailyRate * days;
+        if (rentSubtotalEl) rentSubtotalEl.innerText = `₹${rentSubtotal}`;
+        const escrowDeposit = Math.round(itemValue * 0.35 * qty);
+        if (depositEl) depositEl.innerText = `₹${escrowDeposit}`;
+        if (totalPayableEl) totalPayableEl.innerText = `₹${rentSubtotal + escrowDeposit}`;
       },
 
       closeModal() {
@@ -1742,6 +1929,61 @@
                 </div>
               </div>
 
+              <!-- Flipkart-Style "Browse Campus Catalog by Category" -->
+              <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-850 dark:text-white">Shop & Rent by Category</h3>
+                  </div>
+                  <span onclick="App.navigateTo('explore')" class="text-xs text-blue-600 dark:text-blue-400 font-bold cursor-pointer hover:underline flex items-center gap-1">
+                    Explore All <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </span>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                  <div onclick="App.navigateTo('explore'); App.setCategoryFilter('Calculators');" class="p-3.5 rounded-2xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 hover-lift cursor-pointer flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm shadow-blue-500/20">
+                      <i data-lucide="calculator" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Calculators</h4>
+                      <p class="text-[10px] text-slate-400">Casio fx-991 & TI</p>
+                    </div>
+                  </div>
+
+                  <div onclick="App.navigateTo('explore'); App.setCategoryFilter('Drafters');" class="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 hover-lift cursor-pointer flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-sm shadow-emerald-500/20">
+                      <i data-lucide="drafting-compass" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Mini Drafters</h4>
+                      <p class="text-[10px] text-slate-400">Graphics & Tools</p>
+                    </div>
+                  </div>
+
+                  <div onclick="App.navigateTo('explore'); App.setCategoryFilter('Lab Gear');" class="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 hover-lift cursor-pointer flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm shadow-indigo-500/20">
+                      <i data-lucide="flask-conical" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Lab Gear & Kits</h4>
+                      <p class="text-[10px] text-slate-400">Aprons & Meters</p>
+                    </div>
+                  </div>
+
+                  <div onclick="App.navigateTo('explore'); App.setCategoryFilter('Books');" class="p-3.5 rounded-2xl bg-purple-50/70 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40 hover-lift cursor-pointer flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold shadow-sm shadow-purple-500/20">
+                      <i data-lucide="book-open" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Textbooks</h4>
+                      <p class="text-[10px] text-slate-400">ECE & Core PYQs</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Compact Statistics & Reliability Widgets -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 
@@ -1819,6 +2061,75 @@
                       <div class="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" style="width: ${Math.min(100, Math.max(10, user.trustScore))}%"></div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Campus Trust Wallet & Escrow Vault Widget -->
+              <div class="p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border border-blue-500/30 shadow-xl text-white space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-400/30 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+                      <i data-lucide="wallet" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                        Campus Trust Wallet & Escrow Vault
+                        <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">100% Escrow Protected</span>
+                      </h3>
+                      <p class="text-[11px] text-slate-300">Security deposits held in platform trust vault; auto-refunded upon verified safe return</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button onclick="App.topUpWallet(500)" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold border border-white/10 transition-all hover:scale-105 cursor-pointer">+ ₹500</button>
+                    <button onclick="App.topUpWallet(1000)" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 cursor-pointer">+ ₹1,000</button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Available Balance</span>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <h4 class="text-2xl font-black text-emerald-400">₹${user.walletBalance !== undefined ? user.walletBalance : 1500}</h4>
+                      <span class="text-[10px] text-slate-400">Ready to spend</span>
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                    <span class="text-[10px] font-bold text-amber-300 uppercase tracking-wider block">Locked in Escrow Vault</span>
+                    <div class="flex items-baseline gap-1 mt-1">
+                      <h4 class="text-2xl font-black text-amber-400">₹${depositsHeld}</h4>
+                      <span class="text-[10px] text-slate-400">Held for active borrows</span>
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                    <span class="text-[10px] font-bold text-blue-300 uppercase tracking-wider block">Owner Receiving UPI</span>
+                    <div class="mt-1 flex items-center justify-between gap-2">
+                      <span class="text-xs font-mono font-bold text-white truncate">${user.ownerUpiId || 'Not Saved Yet'}</span>
+                      <span class="text-[10px] px-2 py-0.5 rounded-full ${user.ownerUpiId ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-slate-700 text-slate-300'} font-bold">
+                        ${user.ownerUpiId ? '✓ Verified' : 'Pending'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs border-t border-white/10">
+                  <div class="flex items-center gap-2 flex-1">
+                    <input 
+                      type="text" 
+                      id="owner-upi-input" 
+                      placeholder="Enter receiving UPI ID (e.g. tejas@okhdfcbank)" 
+                      value="${user.ownerUpiId || ''}" 
+                      class="w-full sm:max-w-xs px-3.5 py-2 rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-400 font-mono"
+                    >
+                    <button onclick="App.saveOwnerUpi(document.getElementById('owner-upi-input').value)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs whitespace-nowrap shadow-md cursor-pointer hover:scale-105 transition-all">
+                      Save Payout UPI
+                    </button>
+                  </div>
+                  <span class="text-[11px] text-slate-300 flex items-center gap-1">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    Zero Platform Fees • 100% Student Protected
+                  </span>
                 </div>
               </div>
 
@@ -2015,53 +2326,263 @@
       // -------------------------------------------------------------
       // 4. EXPLORE & RESOURCE DETAIL / REQUEST
       // -------------------------------------------------------------
-        getExploreHtml() {
+      getExploreHtml() {
         const user = stateObj.currentUser;
         const physical = stateObj.resources.filter(r => r.type === 'Physical Item');
 
+        // Apply Tab Filter (All, Rent, Sell, Exchange)
         let filtered = physical;
         if (this.exploreTab === 'rent') {
-          filtered = physical.filter(r => r.listingMethod === 'rent' || !r.listingMethod);
+          filtered = filtered.filter(r => r.listingMethod === 'rent' || !r.listingMethod);
         } else if (this.exploreTab === 'sell') {
-          filtered = physical.filter(r => r.listingMethod === 'sell');
+          filtered = filtered.filter(r => r.listingMethod === 'sell');
         } else if (this.exploreTab === 'exchange') {
-          filtered = physical.filter(r => r.listingMethod === 'exchange');
+          filtered = filtered.filter(r => r.listingMethod === 'exchange');
+        }
+
+        // Apply Category Filter (Calculators, Drafters, Lab Gear, Books, etc.)
+        if (this.categoryFilter && this.categoryFilter !== 'all') {
+          const cf = this.categoryFilter.toLowerCase();
+          filtered = filtered.filter(r => {
+            const cat = (r.category || '').toLowerCase();
+            const nm = (r.name || '').toLowerCase();
+            if (cf === 'calculators') return cat.includes('calc') || nm.includes('calc') || nm.includes('casio');
+            if (cf === 'drafters') return cat.includes('draft') || nm.includes('draft') || nm.includes('scale');
+            if (cf === 'lab gear') return cat.includes('lab') || nm.includes('lab') || nm.includes('multimeter') || nm.includes('apron') || nm.includes('coat');
+            if (cf === 'books') return cat.includes('book') || nm.includes('mechanics') || nm.includes('signals') || nm.includes('processing') || nm.includes('textbook');
+            return cat.includes(cf) || nm.includes(cf);
+          });
+        }
+
+        // Apply Search Query Filter
+        if (this.searchQuery && this.searchQuery.trim() !== '') {
+          const q = this.searchQuery.toLowerCase().trim();
+          filtered = filtered.filter(r => 
+            (r.name && r.name.toLowerCase().includes(q)) ||
+            (r.description && r.description.toLowerCase().includes(q)) ||
+            (r.category && r.category.toLowerCase().includes(q)) ||
+            (r.ownerName && r.ownerName.toLowerCase().includes(q)) ||
+            (r.swapPreferences && r.swapPreferences.toLowerCase().includes(q))
+          );
         }
 
         return `
-          <div class="space-y-8 text-left">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Explore Campus Catalog</h1>
-                <p class="text-slate-400 text-xs mt-1">Lend, buy, or swap microcontroller kits, lab equipment, books, and resources securely.</p>
+          <div class="space-y-6 text-left">
+            
+            <!-- 1. FLIPKART-STYLE TOP SEARCH & LOCATION HEADER -->
+            <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              <!-- Wide Search Bar -->
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                <input 
+                  type="text" 
+                  id="campus-search-input" 
+                  value="${this.searchQuery || ''}" 
+                  oninput="App.handleSearchInput(this.value)" 
+                  placeholder="Search for Casio calculators, drafters, engineering textbooks, lab kits..." 
+                  class="w-full pl-12 pr-10 py-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all font-sans"
+                >
+                ${this.searchQuery ? `
+                  <button onclick="App.handleSearchInput('');" class="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                  </button>
+                ` : ''}
               </div>
-              <button onclick="App.navigateTo('share_resource')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-2xl text-xs font-bold self-start hover-lift shadow-lg shadow-brand-500/20 flex items-center gap-1.5"><i data-lucide="plus" class="w-4 h-4"></i>Share Resource</button>
+
+              <!-- Location Chip & Share CTA -->
+              <div class="flex items-center gap-2.5 flex-shrink-0">
+                <div class="hidden sm:flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-rose-500"></i>
+                  <span>Campus: ECE Dept / Central Library</span>
+                </div>
+                <button onclick="App.navigateTo('share_resource')" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white rounded-2xl text-xs font-bold shadow-lg shadow-blue-500/20 hover-lift flex items-center gap-1.5 cursor-pointer">
+                  <i data-lucide="plus" class="w-4 h-4"></i>
+                  <span>Share Resource</span>
+                </button>
+              </div>
             </div>
 
-            <!-- Tab Filters for Sell/Rent/Exchange -->
-            <div class="flex gap-2 pb-2 overflow-x-auto border-b border-slate-200/50 dark:border-slate-800/50">
-              <button onclick="App.setExploreTab('all')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                this.exploreTab === 'all' ? 'bg-brand-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900'
-              }">All Items</button>
-              <button onclick="App.setExploreTab('rent')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                this.exploreTab === 'rent' ? 'bg-brand-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900'
-              }">To Rent / Free</button>
-              <button onclick="App.setExploreTab('sell')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                this.exploreTab === 'sell' ? 'bg-brand-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900'
-              }">To Buy</button>
-              <button onclick="App.setExploreTab('exchange')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                this.exploreTab === 'exchange' ? 'bg-brand-600 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-900'
-              }">To Swap</button>
+            <!-- 2. FLIPKART-STYLE HORIZONTAL CATEGORY ICON STRIP -->
+            <div class="p-3 sm:p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm overflow-x-auto">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-max pb-0.5">
+                
+                <!-- Category 1: All Items -->
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('all');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.categoryFilter === 'all' && this.exploreTab === 'all' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 ring-2 ring-blue-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                  <span>All Items</span>
+                </button>
+
+                <!-- Category 2: To Rent -->
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('rent');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.exploreTab === 'rent' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/25 ring-2 ring-emerald-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-500 ${this.exploreTab === 'rent' ? 'text-white' : ''}"></i>
+                  <span>To Rent</span>
+                </button>
+
+                <!-- Category 3: To Buy -->
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('sell');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.exploreTab === 'sell' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 ring-2 ring-blue-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-500 ${this.exploreTab === 'sell' ? 'text-white' : ''}"></i>
+                  <span>To Buy</span>
+                </button>
+
+                <!-- Category 4: To Swap -->
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('exchange');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.exploreTab === 'exchange' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/25 ring-2 ring-indigo-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="repeat" class="w-4 h-4 text-indigo-500 ${this.exploreTab === 'exchange' ? 'text-white' : ''}"></i>
+                  <span>To Swap</span>
+                </button>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+
+                <!-- Category 5: Calculators -->
+                <button onclick="App.setCategoryFilter('Calculators');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.categoryFilter === 'Calculators' ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="calculator" class="w-4 h-4 text-blue-500 ${this.categoryFilter === 'Calculators' ? 'text-white' : ''}"></i>
+                  <span>Calculators</span>
+                </button>
+
+                <!-- Category 6: Lab Aprons & Gear -->
+                <button onclick="App.setCategoryFilter('Lab Gear');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.categoryFilter === 'Lab Gear' ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="flask-conical" class="w-4 h-4 text-emerald-500 ${this.categoryFilter === 'Lab Gear' ? 'text-white' : ''}"></i>
+                  <span>Lab Gear & Aprons</span>
+                </button>
+
+                <!-- Category 7: Engineering Drafters -->
+                <button onclick="App.setCategoryFilter('Drafters');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.categoryFilter === 'Drafters' ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="drafting-compass" class="w-4 h-4 text-indigo-500 ${this.categoryFilter === 'Drafters' ? 'text-white' : ''}"></i>
+                  <span>Engineering Drafters</span>
+                </button>
+
+                <!-- Category 8: Textbooks -->
+                <button onclick="App.setCategoryFilter('Books');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                  this.categoryFilter === 'Books' ? 'bg-purple-600 text-white shadow-md ring-2 ring-purple-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
+                }">
+                  <i data-lucide="book-open" class="w-4 h-4 text-purple-500 ${this.categoryFilter === 'Books' ? 'text-white' : ''}"></i>
+                  <span>Textbooks</span>
+                </button>
+              </div>
             </div>
-            
+
+            <!-- 3. FLIPKART-STYLE HERO PROMO BANNER -->
+            <div class="relative overflow-hidden p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 text-white border border-blue-500/30 shadow-xl shadow-blue-950/20">
+              <div class="absolute right-0 top-0 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="absolute left-1/3 bottom-0 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="space-y-2 max-w-xl">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                    <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
+                    <span>Educircle Campus Deals & Verified Rentals</span>
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
+                    Rent lab gear from ₹15/day with 100% Escrow Protection
+                  </h2>
+                  <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Why buy brand new when you can borrow calculators, drafters, and kits from verified branch peers? Instant handover, validated ZPRN students, zero scam risk.
+                  </p>
+                  <div class="flex items-center gap-4 pt-2 text-[11px] font-semibold text-slate-200 flex-wrap">
+                    <span class="flex items-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Same-Day Pickup</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> 100% Auto Refund</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="repeat" class="w-3.5 h-3.5 text-blue-400"></i> Zero-Cash Peer Swaps</span>
+                  </div>
+                </div>
+
+                <div class="flex flex-row md:flex-col gap-2.5 flex-shrink-0">
+                  <button onclick="App.setExploreTab('rent')" class="px-5 py-3 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-black text-xs shadow-lg hover-lift flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-600"></i>
+                    <span>Explore Rentals</span>
+                  </button>
+                  <button onclick="App.setExploreTab('sell')" class="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs hover-lift flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-300"></i>
+                    <span>Buy Student Deals</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. "EDUCIRCLE ASSURED" TRUST GUARANTEE STRIP -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0 font-bold">
+                  <i data-lucide="badge-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white flex items-center gap-1">Educircle Assured</h4>
+                  <p class="text-[10px] text-slate-400">Peer verified quality</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center flex-shrink-0 font-bold">
+                  <i data-lucide="user-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white">ZPRN Verified</h4>
+                  <p class="text-[10px] text-slate-400">College directory roster</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center flex-shrink-0 font-bold">
+                  <i data-lucide="lock" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Escrow Vault</h4>
+                  <p class="text-[10px] text-slate-400">Zero deposit theft risk</p>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center flex-shrink-0 font-bold">
+                  <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Instant Return</h4>
+                  <p class="text-[10px] text-slate-400">100% refund upon check</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. PRODUCT SHELF HEADER & FILTERS -->
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <div class="flex items-center gap-2.5">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
+                  ${this.searchQuery ? `Search Results for "${this.searchQuery}"` : this.categoryFilter !== 'all' ? `${this.categoryFilter} on Campus` : 'Trending on Campus'}
+                </h2>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 font-mono">${filtered.length} item(s)</span>
+              </div>
+
+              ${(this.categoryFilter !== 'all' || this.exploreTab !== 'all' || this.searchQuery) ? `
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('all'); App.handleSearchInput('');" class="text-xs text-blue-600 dark:text-blue-400 font-bold hover:underline cursor-pointer flex items-center gap-1">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Filters
+                </button>
+              ` : ''}
+            </div>
+
+            <!-- 6. HIGH-TRUST PRODUCT CARDS GRID (FLIPKART STYLE) -->
             ${filtered.length === 0 ? `
               <div class="p-16 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[32px] text-slate-500 shadow-sm space-y-3">
-                <i data-lucide="inbox" class="w-12 h-12 mx-auto text-slate-400"></i>
-                <h3 class="font-bold text-slate-800 dark:text-white">No items found</h3>
-                <p class="text-xs text-slate-400">No resources currently listed under this method.</p>
+                <div class="w-16 h-16 rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400">
+                  <i data-lucide="inbox" class="w-8 h-8"></i>
+                </div>
+                <h3 class="font-bold text-slate-800 dark:text-white">No matching campus resources found</h3>
+                <p class="text-xs text-slate-400 max-w-md mx-auto">Try clearing your filters or searching for something else like "Casio", "Drafter", or "Lab Coat".</p>
+                <button onclick="App.setCategoryFilter('all'); App.setExploreTab('all'); App.handleSearchInput('');" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer">View All Items</button>
               </div>
             ` : `
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 ${filtered.map(item => {
                   const val = item.itemValue || 1000;
                   const minDep = Math.round(val * 0.3);
@@ -2071,79 +2592,113 @@
                   const isAvailable = availableQty > 0 && item.availability === 'available';
                   const method = item.listingMethod || 'rent';
 
-                  let badgeColor = 'bg-purple-500/10 text-purple-600';
+                  let badgeStyle = 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25';
                   let badgeText = 'Rent / Borrow';
-                  let priceLabel = `₹${val} Value`;
+                  let pricingHtml = '';
+                  let actionBtnHtml = '';
 
-                  if (method === 'sell') {
-                    badgeColor = 'bg-emerald-500/10 text-emerald-600';
-                    badgeText = `For Sale`;
-                    priceLabel = `₹${item.price || 0} Purchase`;
+                  if (method === 'rent') {
+                    badgeStyle = 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25';
+                    badgeText = 'Rent';
+                    pricingHtml = `
+                      <div class="flex items-baseline gap-1">
+                        <span class="text-lg font-black text-slate-900 dark:text-white">₹${item.price || 25}</span>
+                        <span class="text-[11px] text-slate-400 font-normal">/ day</span>
+                      </div>
+                      <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                        <i data-lucide="shield" class="w-3 h-3"></i> Deposit: ₹${minDep} (Held in Escrow)
+                      </div>
+                    `;
+                    actionBtnHtml = isAvailable ? `
+                      <button onclick="App.openBorrowRequestModal('${item.id}')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs shadow-md shadow-emerald-500/20 cursor-pointer hover-lift flex items-center gap-1">
+                        <span>Rent Now</span>
+                      </button>
+                    ` : `<span class="text-slate-400 italic text-[11px] font-semibold">Borrowed</span>`;
+                  } else if (method === 'sell') {
+                    badgeStyle = 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25';
+                    badgeText = 'Buy';
+                    const mrp = item.itemValue || (item.price ? item.price * 2 : 1000);
+                    const discountPercent = mrp > (item.price || 0) ? Math.round((1 - ((item.price || 0) / mrp)) * 100) : 50;
+                    pricingHtml = `
+                      <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <span class="text-lg font-black text-slate-900 dark:text-white">₹${item.price || 400}</span>
+                        <span class="text-xs text-slate-400 line-through">₹${mrp}</span>
+                        <span class="text-[10px] text-emerald-600 font-black">${discountPercent}% off</span>
+                      </div>
+                      <div class="text-[10px] text-slate-400 font-semibold">
+                        Instant Ownership Transfer
+                      </div>
+                    `;
+                    actionBtnHtml = isAvailable ? `
+                      <button onclick="App.openBorrowRequestModal('${item.id}')" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl text-xs shadow-md shadow-blue-500/20 cursor-pointer hover-lift flex items-center gap-1">
+                        <span>Buy Now</span>
+                      </button>
+                    ` : `<span class="text-slate-400 italic text-[11px] font-semibold">Sold Out</span>`;
                   } else if (method === 'exchange') {
-                    badgeColor = 'bg-indigo-500/10 text-indigo-600';
-                    badgeText = `Exchange Swap`;
-                    priceLabel = `Trade / Propose swap`;
+                    badgeStyle = 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/25';
+                    badgeText = 'Swap';
+                    pricingHtml = `
+                      <div class="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
+                        <i data-lucide="repeat" class="w-3.5 h-3.5"></i> Zero Cash Peer Swap
+                      </div>
+                      <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5" title="${item.swapPreferences || 'Academic items'}">
+                        Wants: <strong>${item.swapPreferences || 'Any Academic Gear'}</strong>
+                      </div>
+                    `;
+                    actionBtnHtml = isAvailable ? `
+                      <button onclick="App.openBorrowRequestModal('${item.id}')" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl text-xs shadow-md shadow-indigo-500/20 cursor-pointer hover-lift flex items-center gap-1">
+                        <span>Propose Swap</span>
+                      </button>
+                    ` : `<span class="text-slate-400 italic text-[11px] font-semibold">In Trade</span>`;
                   }
 
                   return `
-                    <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between hover-lift">
+                    <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover-lift flex flex-col justify-between group transition-all">
                       <div>
-                        <div class="aspect-video w-full rounded-2xl bg-slate-100 dark:bg-slate-800 mb-4 flex items-center justify-center overflow-hidden relative">
-                          ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<i data-lucide="image" class="w-8 h-8 text-slate-300"></i>`}
-                          <span class="absolute top-2.5 right-2.5 px-3 py-1 rounded-xl text-[10px] font-bold bg-slate-950/70 text-white backdrop-blur-md">${priceLabel}</span>
+                        <!-- Product image container with Flipkart-style badges -->
+                        <div class="aspect-[4/3] w-full rounded-2xl bg-slate-100 dark:bg-slate-800/80 mb-3 flex items-center justify-center overflow-hidden relative border border-slate-100 dark:border-slate-800">
+                          ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">` : `<i data-lucide="package" class="w-10 h-10 text-slate-300"></i>`}
+                          
+                          <!-- Top Left: Verified Check -->
+                          <span class="absolute top-2 left-2 px-2 py-0.5 rounded-lg text-[9px] font-bold bg-slate-950/80 text-emerald-300 border border-emerald-500/30 backdrop-blur-md flex items-center gap-1">
+                            <i data-lucide="shield-check" class="w-2.5 h-2.5"></i> Inspected
+                          </span>
+
+                          <!-- Top Right: Method Pill -->
+                          <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider ${badgeStyle} backdrop-blur-md">
+                            ${badgeText}
+                          </span>
                         </div>
-                        
-                        <div class="flex justify-between items-center mb-2">
-                          <span class="text-[9px] font-bold uppercase text-brand-600 dark:text-brand-400">${item.category}</span>
-                          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${badgeColor}">${badgeText}</span>
+
+                        <!-- Category & Rating Row (Flipkart style) -->
+                        <div class="flex items-center justify-between gap-1 mb-1.5">
+                          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">${item.category}</span>
+                          <div class="flex items-center gap-1.5">
+                            <!-- Flipkart green rating badge -->
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-600 text-white flex items-center gap-0.5 shadow-sm">
+                              ${item.ratingAverage || 4.9} <i data-lucide="star" class="w-2.5 h-2.5 fill-current"></i>
+                            </span>
+                            <span class="text-[9px] text-slate-400 font-semibold">(${item.sharesCount || 24})</span>
+                          </div>
                         </div>
-                        
-                        <h3 class="font-bold text-slate-850 dark:text-white text-sm truncate">${item.name}</h3>
-                        <p class="text-xs text-slate-400 mt-1 line-clamp-2">${item.description}</p>
-                        
-                        <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5 border border-slate-150/40 dark:border-slate-800/40">
-                          <div class="flex justify-between">
-                            <span class="text-slate-400">Stock Available:</span>
-                            <span class="font-bold text-slate-800 dark:text-slate-200">${availableQty} of ${totalQty} unit(s)</span>
-                          </div>
-                          <div class="flex justify-between">
-                            <span class="text-slate-400">Condition:</span>
-                            <span class="font-bold">${item.condition}</span>
-                          </div>
-                          ${method === 'rent' ? `
-                            <div class="flex justify-between">
-                              <span class="text-slate-400">Suggested Deposit:</span>
-                              <span class="font-bold text-indigo-600 dark:text-indigo-400">₹${minDep} – ₹${maxDep} (30%-40%)</span>
-                            </div>
-                          ` : ''}
-                          ${method === 'sell' ? `
-                            <div class="flex justify-between">
-                              <span class="text-slate-400">Fixed Sale Price:</span>
-                              <span class="font-bold text-emerald-600">₹${item.price || 0}</span>
-                            </div>
-                          ` : ''}
-                          ${method === 'exchange' ? `
-                            <div class="flex justify-between">
-                              <span class="text-slate-400">Prefer Swap With:</span>
-                              <span class="font-bold text-indigo-500 truncate max-w-[120px]">${item.swapPreferences || 'Any Physical Item'}</span>
-                            </div>
-                          ` : ''}
+
+                        <!-- Item Name & Description -->
+                        <h3 class="font-bold text-sm text-slate-850 dark:text-white line-clamp-1 group-hover:text-blue-600 transition-colors" title="${item.name}">${item.name}</h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-relaxed">${item.description}</p>
+
+                        <!-- Pricing Row -->
+                        <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 space-y-1">
+                          ${pricingHtml}
                         </div>
                       </div>
-                      
-                      <div class="mt-5 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-                        <div class="truncate mr-3">
+
+                      <!-- Card Footer: Owner Info & Action Button -->
+                      <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                        <div class="truncate">
                           <span class="text-[9px] text-slate-400 block">Owner:</span>
-                          <span class="font-bold truncate text-slate-800 dark:text-slate-200">${item.ownerName}</span>
+                          <span class="font-bold text-xs text-slate-700 dark:text-slate-200 truncate block">${item.ownerName.split(' ')[0]}</span>
                         </div>
-                        
-                        ${isAvailable ? `
-                          <button onclick="App.openBorrowRequestModal('${item.id}')" class="px-4.5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-2xl shadow-md shadow-brand-500/25 cursor-pointer transition-all hover:scale-[1.03]">
-                            ${method === 'sell' ? 'Buy Now' : method === 'exchange' ? 'Propose Swap' : 'Rent / Borrow'}
-                          </button>
-                        ` : `
-                          <span class="text-slate-400 italic text-[11px] font-semibold">All Borrowed</span>
-                        `}
+                        ${actionBtnHtml}
                       </div>
                     </div>
                   `;
@@ -2192,9 +2747,11 @@
         const availableQty = item.availableQuantity !== undefined ? item.availableQuantity : (item.quantity || 1);
         const method = item.listingMethod || 'rent';
         const val = item.itemValue || 1000;
-        const minDep = Math.round(val * 0.3);
-        const maxDep = Math.round(val * 0.4);
-        const defaultReturnDate = new Date(Date.now() + (item.lendingDuration || 7) * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        const defaultDays = 7;
+        const initialEscrowDeposit = Math.round(val * 0.35);
+        const initialRentalSubtotal = (item.price || 25) * defaultDays;
+        const initialTotalPayable = initialRentalSubtotal + initialEscrowDeposit;
+        const defaultReturnDate = new Date(Date.now() + (item.lendingDuration || defaultDays) * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
         // If EXCHANGE: load user's own physical resources to select for swapping
         let swapItemsHtml = '';
@@ -2202,107 +2759,256 @@
           const userItems = stateObj.resources.filter(r => r.ownerId === user.id && r.type === 'Physical Item');
           if (userItems.length === 0) {
             swapItemsHtml = `
-              <div class="p-3.5 rounded-2xl bg-rose-500/10 text-rose-500 text-xs font-semibold text-center border border-rose-500/20">
-                ⚠️ You must first list a physical item under "Share Resource" to propose an exchange.
+              <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold text-center space-y-1">
+                <div class="flex items-center justify-center gap-1.5 font-bold">
+                  <i data-lucide="alert-triangle" class="w-4 h-4"></i> No Physical Items Listed
+                </div>
+                <p class="text-[11px]">You must first list a physical item under "Share Resource" to propose an exchange.</p>
               </div>
             `;
           } else {
             swapItemsHtml = `
               <div>
                 <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1.5">Select Your Swapping Item *</label>
-                <select id="req-swap-item" class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
-                  ${userItems.map(ui => `<option value="${ui.id}">${ui.name} (${ui.condition})</option>`).join('')}
+                <select id="req-swap-item" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                  ${userItems.map(ui => `<option value="${ui.id}">${ui.name} (${ui.condition || 'Good'})</option>`).join('')}
                 </select>
               </div>
             `;
           }
         }
 
+        let badgeStyle = 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25';
+        let badgeText = 'Rent / Borrow';
+        let primaryBtnText = 'Lock Escrow & Submit Rent Request';
+        let primaryBtnIcon = 'shield-check';
+        let primaryBtnColor = 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/25';
+
+        if (method === 'rent') {
+          badgeStyle = 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25';
+          badgeText = 'Rent with Escrow';
+          primaryBtnText = 'Lock Escrow & Submit Rent Request';
+          primaryBtnIcon = 'shield-check';
+          primaryBtnColor = 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/25';
+        } else if (method === 'sell') {
+          badgeStyle = 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25';
+          badgeText = 'Direct Purchase';
+          primaryBtnText = `Confirm Purchase Request (₹${item.price || 400})`;
+          primaryBtnIcon = 'shopping-bag';
+          primaryBtnColor = 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/25';
+        } else if (method === 'exchange') {
+          badgeStyle = 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/25';
+          badgeText = 'Peer Exchange';
+          primaryBtnText = 'Propose Gear Exchange';
+          primaryBtnIcon = 'repeat';
+          primaryBtnColor = 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-500/25';
+        }
+
+        const mrp = item.itemValue || (item.price ? item.price * 2 : 1000);
+        const discountPercent = mrp > (item.price || 0) ? Math.round((1 - ((item.price || 0) / mrp)) * 100) : 50;
+
         const modalHtml = `
-          <div class="space-y-6">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-600 flex items-center justify-center font-bold">
-                <i data-lucide="handshake" class="w-6 h-6"></i>
-              </div>
-              <div>
-                <h3 class="font-bold text-base text-slate-900 dark:text-white">Submit Proposal: ${item.name}</h3>
-                <p class="text-xs text-slate-400">Requesting from owner <strong>${item.ownerName}</strong>.</p>
-              </div>
-            </div>
-
-            <!-- Dynamic modal template body based on method -->
-            <div class="space-y-4">
-              ${method === 'rent' ? `
-                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-250 dark:border-slate-800 text-xs space-y-2">
-                  <div class="flex justify-between">
-                    <span class="text-slate-400">Lending Term:</span>
-                    <span class="font-bold text-slate-800 dark:text-slate-200">Rent / Borrow</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-slate-400">Value (per unit):</span>
-                    <span class="font-bold text-slate-800 dark:text-slate-200">₹${val}</span>
-                  </div>
-                  <div class="flex justify-between">
-                    <span class="text-slate-400">Suggested Deposit:</span>
-                    <span class="font-bold text-indigo-600">₹${minDep} – ₹${maxDep} (30%–40%)</span>
-                  </div>
-                </div>
-              ` : ''}
-
-              ${method === 'sell' ? `
-                <div class="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10 text-xs space-y-2">
-                  <div class="flex justify-between">
-                    <span class="text-slate-400">Purchase price (per unit):</span>
-                    <span class="font-bold text-emerald-600 text-sm">₹${item.price || 0}</span>
-                  </div>
-                  <div class="flex justify-between text-[10px] text-slate-400">
-                    <span>Deposit required:</span>
-                    <span class="font-bold">No Deposit</span>
-                  </div>
-                </div>
-              ` : ''}
-
-              ${method === 'exchange' ? `
-                <div class="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 text-xs space-y-2">
-                  <div class="flex justify-between">
-                    <span class="text-slate-400">Swap Preferences:</span>
-                    <span class="font-bold text-indigo-600 truncate max-w-[200px]">${item.swapPreferences || 'Any Item'}</span>
-                  </div>
-                </div>
-              ` : ''}
-
-              <div class="space-y-4 text-xs">
-                ${method === 'exchange' ? swapItemsHtml : `
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1.5">Quantity Required</label>
-                      <input type="number" id="req-quantity" value="1" min="1" max="${availableQty}" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-bold focus:ring-1 focus:ring-brand-500 focus:outline-none">
-                    </div>
-                    ${method === 'rent' ? `
-                      <div>
-                        <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1.5">Proposed Return Date</label>
-                        <input type="date" id="req-return-date" value="${defaultReturnDate}" min="${new Date().toISOString().split('T')[0]}" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:ring-1 focus:ring-brand-500 focus:outline-none">
-                      </div>
-                    ` : ''}
-                  </div>
-                `}
-
+          <div class="space-y-5">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-blue-600/10 text-blue-600 flex items-center justify-center font-bold">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </span>
                 <div>
-                  <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1.5">Message / Proposal Note</label>
-                  <textarea id="req-purpose" rows="2" placeholder="Send a message to the owner..." class="w-full p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none font-sans">I am interested in this item, let's meet up.</textarea>
+                  <h3 class="font-black text-base text-slate-900 dark:text-white leading-none">Educircle Assured Checkout</h3>
+                  <p class="text-[11px] text-slate-400 mt-1">Verified Campus P2P Handover & Escrow Vault</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${badgeStyle}">
+                ${badgeText}
+              </span>
+            </div>
+
+            <!-- Two-Column Layout (Flipkart E-Commerce Style) -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+              <!-- Left Column: Item Showcase, Location & WhatsApp Connect -->
+              <div class="md:col-span-5 space-y-3.5">
+                <div class="aspect-[4/3] w-full rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-slate-200 dark:border-slate-800 flex items-center justify-center">
+                  ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<i data-lucide="package" class="w-12 h-12 text-slate-300"></i>`}
+                  <span class="absolute top-2 left-2 px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-950/80 text-emerald-300 border border-emerald-500/30 backdrop-blur-md flex items-center gap-1 shadow-md">
+                    <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i> Inspected & Assured
+                  </span>
+                </div>
+
+                <!-- Verified Owner Profile Card -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800/80 space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-sm">
+                        ${(item.ownerName || 'S').charAt(0)}
+                      </div>
+                      <div>
+                        <div class="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1">
+                          <span>${item.ownerName}</span>
+                          <i data-lucide="badge-check" class="w-3.5 h-3.5 text-blue-500"></i>
+                        </div>
+                        <span class="text-[10px] font-semibold text-slate-400">Campus Verified Peer</span>
+                      </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[11px] font-black bg-emerald-600 text-white flex items-center gap-1 shadow-sm">
+                      ${item.ratingAverage || 4.9} <i data-lucide="star" class="w-2.5 h-2.5 fill-current"></i>
+                    </span>
+                  </div>
+
+                  <!-- Safe Zone Location -->
+                  <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500 shrink-0"></i>
+                    <span>Pickup: <strong>Library & Dept Safe-Zone</strong></span>
+                  </div>
+
+                  <!-- Direct WhatsApp Button -->
+                  <button type="button" onclick="App.openWhatsApp('${item.ownerName.replace(/'/g, "\\'")}', '${item.name.replace(/'/g, "\\'")}', '${method}')" class="w-full py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-black rounded-xl text-[11px] flex items-center justify-center gap-1.5 border border-emerald-500/20 transition-all cursor-pointer">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+                    <span>WhatsApp ${item.ownerName.split(' ')[0]}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right Column: Pricing Breakdown, Escrow Assurances, Proposal Details -->
+              <div class="md:col-span-7 space-y-3.5 text-xs">
+                <div>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">${item.category} • ${item.condition || 'Tested Working'}</span>
+                  <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-white leading-snug mt-0.5">${item.name}</h2>
+                  <p class="text-slate-500 dark:text-slate-400 text-[11px] mt-1 leading-relaxed">${item.description}</p>
+                </div>
+
+                <!-- Flipkart-style Price & Escrow Breakdown Box -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2">
+                  ${method === 'rent' ? `
+                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
+                      <span class="text-slate-500">Daily Rental Fee:</span>
+                      <span class="font-black text-slate-800 dark:text-slate-200">₹${item.price || 25} / day</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-slate-500">Estimated Duration:</span>
+                      <span id="calc-rental-days" class="font-bold text-slate-700 dark:text-slate-300">7 days</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-slate-500">Rental Subtotal:</span>
+                      <span id="calc-rent-subtotal" class="font-bold text-slate-800 dark:text-slate-200">₹${initialRentalSubtotal}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-slate-500 flex items-center gap-1">
+                        <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-500"></i>
+                        <span>Refundable Escrow Deposit:</span>
+                      </span>
+                      <span id="calc-escrow-deposit" class="font-black text-emerald-600 dark:text-emerald-400">₹${initialEscrowDeposit}</span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                      <span class="font-black text-slate-900 dark:text-white text-xs">Total at Safe Handover:</span>
+                      <span id="calc-total-payable" class="text-sm font-black text-emerald-600 dark:text-emerald-400">₹${initialTotalPayable}</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-700 dark:text-emerald-300 font-semibold flex items-center gap-1.5">
+                      <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                      <span>100% Refundable: Deposit stays locked in Educircle Escrow Vault until you safely return the gear.</span>
+                    </div>
+                  ` : ''}
+
+                  ${method === 'sell' ? `
+                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
+                      <span class="text-slate-500">Original MRP:</span>
+                      <span class="line-through text-slate-400">₹${mrp}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-slate-500">Educircle Student Price:</span>
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-base font-black text-slate-900 dark:text-white">₹${item.price || 400}</span>
+                        <span class="text-[10px] font-black text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded">${discountPercent}% OFF</span>
+                      </div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                      <span class="text-slate-500">Escrow Security Deposit:</span>
+                      <span class="font-bold text-slate-500">₹0 (Not Required for Purchase)</span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                      <span class="font-black text-slate-900 dark:text-white text-xs">Final Payable:</span>
+                      <span class="text-sm font-black text-blue-600 dark:text-blue-400">₹${item.price || 400}</span>
+                    </div>
+                  ` : ''}
+
+                  ${method === 'exchange' ? `
+                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
+                      <span class="text-slate-500">Exchange Type:</span>
+                      <span class="font-black text-indigo-600 dark:text-indigo-400">Zero-Cash Student Barter</span>
+                    </div>
+                    <div class="text-xs space-y-1">
+                      <span class="text-slate-500 block">Owner is looking for:</span>
+                      <div class="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-500/20 text-xs">
+                        "${item.swapPreferences || 'Academic Books, Calculators, or Lab Instruments'}"
+                      </div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                      <span class="font-black text-slate-900 dark:text-white text-xs">Cash Transaction Fee:</span>
+                      <span class="text-sm font-black text-emerald-600">₹0 Free</span>
+                    </div>
+                  ` : ''}
+                </div>
+
+                <!-- Form Inputs (Quantity, Return Date, Notes) -->
+                <div class="space-y-3">
+                  ${method === 'exchange' ? swapItemsHtml : `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1">Quantity</label>
+                        <input type="number" id="req-quantity" value="1" min="1" max="${availableQty}" oninput="App.updateRentalCost(${item.price || 25}, ${val})" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-black focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                      </div>
+                      ${method === 'rent' ? `
+                        <div>
+                          <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1">Proposed Return Date</label>
+                          <input type="date" id="req-return-date" value="${defaultReturnDate}" min="${new Date().toISOString().split('T')[0]}" onchange="App.updateRentalCost(${item.price || 25}, ${val})" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                      ` : ''}
+                    </div>
+                  `}
+
+                  <div>
+                    <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1">Message to ${item.ownerName.split(' ')[0]}</label>
+                    <textarea id="req-purpose" rows="2" placeholder="Tell the owner when you need it..." class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none font-sans">Hi, I would like to request this item for academic coursework. Can we meet near the campus library?</textarea>
+                  </div>
+                </div>
+
+                <!-- Educircle Assured 3-Pillar Trust Box -->
+                <div class="p-3 rounded-2xl bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/15 space-y-1.5 text-[10px] text-slate-500 dark:text-slate-400">
+                  <div class="font-black text-slate-800 dark:text-slate-200 flex items-center gap-1 text-[11px]">
+                    <i data-lucide="award" class="w-3.5 h-3.5 text-blue-500"></i> Educircle Buyer & Borrower Protection
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 text-[10px]">
+                    <div class="flex items-center gap-1 text-slate-600 dark:text-slate-300 font-medium">
+                      <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500 shrink-0"></i>
+                      <span>ZPRN Verified Peers</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-slate-600 dark:text-slate-300 font-medium">
+                      <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500 shrink-0"></i>
+                      <span>In-Person Inspection</span>
+                    </div>
+                    <div class="flex items-center gap-1 text-slate-600 dark:text-slate-300 font-medium">
+                      <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500 shrink-0"></i>
+                      <span>Escrow Vault Refund</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
-              <button onclick="App.closeModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold hover:bg-slate-150">Cancel</button>
-              <button id="submit-req-btn" ${method === 'exchange' && stateObj.resources.filter(r => r.ownerId === user.id && r.type === 'Physical Item').length === 0 ? 'disabled class="px-5 py-2.5 rounded-xl bg-slate-300 text-slate-500 text-xs font-bold cursor-not-allowed"' : `onclick="App.submitBorrowRequest('${item.id}')" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-md shadow-brand-500/20 cursor-pointer hover-lift"`}>
-                Submit Request
+            <!-- Footer Action Buttons -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col-reverse sm:flex-row justify-end gap-3">
+              <button onclick="App.closeModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer">
+                Cancel
+              </button>
+              <button id="submit-req-btn" ${method === 'exchange' && stateObj.resources.filter(r => r.ownerId === user.id && r.type === 'Physical Item').length === 0 ? 'disabled class="px-6 py-2.5 rounded-xl bg-slate-300 text-slate-500 text-xs font-black cursor-not-allowed"' : `onclick="App.submitBorrowRequest('${item.id}')" class="px-6 py-2.5 rounded-xl ${primaryBtnColor} text-xs font-black shadow-lg cursor-pointer hover-lift flex items-center justify-center gap-1.5"`}>
+                <i data-lucide="${primaryBtnIcon}" class="w-4 h-4"></i>
+                <span>${primaryBtnText}</span>
               </button>
             </div>
           </div>
         `;
-        this.openModal(modalHtml);
+        this.openModal(modalHtml, 'max-w-3xl');
       },
 
       submitBorrowRequest(itemId) {
