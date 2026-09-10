@@ -485,28 +485,9 @@
         }
       },
 
-      topUpWallet(amount) {
-        const user = stateObj.currentUser;
-        if (!user) return;
-        user.walletBalance = (user.walletBalance !== undefined ? user.walletBalance : 1500) + amount;
-        stateObj.save();
-        showToast(`Successfully credited ₹${amount} to your Campus Trust Wallet!`, 'success');
-        this.render();
-      },
+      
 
-      saveOwnerUpi(upiId) {
-        const user = stateObj.currentUser;
-        if (!user) return;
-        const cleanUpi = (upiId || '').trim();
-        if (!cleanUpi || !cleanUpi.includes('@')) {
-          showToast('Please enter a valid UPI ID (e.g. name@okhdfcbank or 9876543210@paytm)', 'error');
-          return;
-        }
-        user.ownerUpiId = cleanUpi;
-        stateObj.save();
-        showToast(`Owner Payout UPI ID saved: ${cleanUpi}`, 'success');
-        this.render();
-      },
+      
 
       openChatWithOwner(ownerId, ownerName, itemName) {
         if (!stateObj.currentUser) {
@@ -583,46 +564,9 @@
         lucide.createIcons();
       },
 
-      updateRentalCost(dailyRate, itemValue) {
-        const qtyEl = document.getElementById('req-quantity');
-        const dateEl = document.getElementById('req-return-date');
-        const daysEl = document.getElementById('calc-rental-days');
-        const rentSubtotalEl = document.getElementById('calc-rent-subtotal');
-        const depositEl = document.getElementById('calc-escrow-deposit');
-        const totalPayableEl = document.getElementById('calc-total-payable');
+      
 
-        const qty = qtyEl ? Math.max(1, parseInt(qtyEl.value) || 1) : 1;
-        let days = 7;
-        if (dateEl && dateEl.value) {
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          const ret = new Date(dateEl.value);
-          ret.setHours(0, 0, 0, 0);
-          const diffTime = ret - today;
-          days = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-        }
-        if (daysEl) daysEl.innerText = `${days} day${days > 1 ? 's' : ''}`;
-        const rentSubtotal = qty * dailyRate * days;
-        if (rentSubtotalEl) rentSubtotalEl.innerText = `₹${rentSubtotal}`;
-        const escrowDeposit = Math.round(itemValue * 0.35 * qty);
-        if (depositEl) depositEl.innerText = `₹${escrowDeposit}`;
-        if (totalPayableEl) totalPayableEl.innerText = `₹${rentSubtotal + escrowDeposit}`;
-      },
-
-      updateBuyCost(unitPrice) {
-        const qtyEl = document.getElementById('req-quantity');
-        const qtyDisplayEl = document.getElementById('calc-buy-qty');
-        const totalEl = document.getElementById('calc-buy-total');
-        const qty = qtyEl ? Math.max(1, parseInt(qtyEl.value) || 1) : 1;
-        const total = qty * unitPrice;
-        if (qtyDisplayEl) qtyDisplayEl.innerText = `${qty} unit${qty > 1 ? 's' : ''}`;
-        if (totalEl) totalEl.innerText = `₹${total}`;
-        const submitBtn = document.getElementById('submit-req-btn');
-        if (submitBtn) {
-          const span = submitBtn.querySelector('span');
-          if (span) span.innerText = `Confirm Purchase Request (₹${total})`;
-        }
-      },
+      
 
       closeModal() {
         const root = document.getElementById('modal-root');
@@ -1785,13 +1729,13 @@
                     </div>
                   </div>
 
-                  <div onclick="App.navigateTo('explore'); App.setCategoryFilter('Lab Gear');" class="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 hover-lift cursor-pointer flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm shadow-indigo-500/20">
-                      <i data-lucide="flask-conical" class="w-4.5 h-4.5"></i>
+                  <div onclick="App.navigateTo('study_materials');" class="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 hover-lift cursor-pointer flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center font-bold">
+                      <i data-lucide="file-text" class="w-4 h-4"></i>
                     </div>
                     <div>
-                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Lab Gear & Kits</h4>
-                      <p class="text-[10px] text-slate-400">Aprons & Meters</p>
+                      <h4 class="font-bold text-xs text-slate-850 dark:text-white">Study Materials</h4>
+                      <p class="text-[10px] text-slate-400">PDFs & Notes</p>
                     </div>
                   </div>
 
@@ -1884,75 +1828,6 @@
                       <div class="h-full bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" style="width: ${Math.min(100, Math.max(10, user.trustScore))}%"></div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <!-- Campus Trust Wallet & Escrow Vault Widget -->
-              <div class="p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border border-blue-500/30 shadow-xl text-white space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-400/30 flex items-center justify-center shadow-lg shadow-emerald-500/10">
-                      <i data-lucide="wallet" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                        Campus Trust Wallet & Escrow Vault
-                        <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">100% Escrow Protected</span>
-                      </h3>
-                      <p class="text-[11px] text-slate-300">Security deposits held in platform trust vault; auto-refunded upon verified safe return</p>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <button onclick="App.topUpWallet(500)" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold border border-white/10 transition-all hover:scale-105 cursor-pointer">+ ₹500</button>
-                    <button onclick="App.topUpWallet(1000)" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-lg shadow-emerald-600/30 transition-all hover:scale-105 cursor-pointer">+ ₹1,000</button>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Available Balance</span>
-                    <div class="flex items-baseline gap-1 mt-1">
-                      <h4 class="text-2xl font-black text-emerald-400">₹${user.walletBalance !== undefined ? user.walletBalance : 1500}</h4>
-                      <span class="text-[10px] text-slate-400">Ready to spend</span>
-                    </div>
-                  </div>
-
-                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-[10px] font-bold text-amber-300 uppercase tracking-wider block">Locked in Escrow Vault</span>
-                    <div class="flex items-baseline gap-1 mt-1">
-                      <h4 class="text-2xl font-black text-amber-400">₹${depositsHeld}</h4>
-                      <span class="text-[10px] text-slate-400">Held for active borrows</span>
-                    </div>
-                  </div>
-
-                  <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10">
-                    <span class="text-[10px] font-bold text-blue-300 uppercase tracking-wider block">Owner Receiving UPI</span>
-                    <div class="mt-1 flex items-center justify-between gap-2">
-                      <span class="text-xs font-mono font-bold text-white truncate">${user.ownerUpiId || 'Not Saved Yet'}</span>
-                      <span class="text-[10px] px-2 py-0.5 rounded-full ${user.ownerUpiId ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 'bg-slate-700 text-slate-300'} font-bold">
-                        ${user.ownerUpiId ? '✓ Verified' : 'Pending'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs border-t border-white/10">
-                  <div class="flex items-center gap-2 flex-1">
-                    <input 
-                      type="text" 
-                      id="owner-upi-input" 
-                      placeholder="Enter receiving UPI ID (e.g. tejas@okhdfcbank)" 
-                      value="${user.ownerUpiId || ''}" 
-                      class="w-full sm:max-w-xs px-3.5 py-2 rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-400 font-mono"
-                    >
-                    <button onclick="App.saveOwnerUpi(document.getElementById('owner-upi-input').value)" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs whitespace-nowrap shadow-md cursor-pointer hover:scale-105 transition-all">
-                      Save Payout UPI
-                    </button>
-                  </div>
-                  <span class="text-[11px] text-slate-300 flex items-center gap-1">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
-                    Zero Platform Fees • 100% Student Protected
-                  </span>
                 </div>
               </div>
 
@@ -2163,7 +2038,7 @@
           filtered = filtered.filter(r => r.listingMethod === 'exchange');
         }
 
-        // Apply Category Filter (Calculators, Drafters, Lab Gear, Books, etc.)
+        // Apply Category Filter (Calculators, Drafters, Books, etc.)
         if (this.categoryFilter && this.categoryFilter !== 'all') {
           const cf = this.categoryFilter.toLowerCase();
           filtered = filtered.filter(r => {
@@ -2171,7 +2046,6 @@
             const nm = (r.name || '').toLowerCase();
             if (cf === 'calculators') return cat.includes('calc') || nm.includes('calc') || nm.includes('casio');
             if (cf === 'drafters') return cat.includes('draft') || nm.includes('draft') || nm.includes('scale');
-            if (cf === 'lab gear') return cat.includes('lab') || nm.includes('lab') || nm.includes('multimeter') || nm.includes('apron') || nm.includes('coat');
             if (cf === 'books') return cat.includes('book') || nm.includes('mechanics') || nm.includes('signals') || nm.includes('processing') || nm.includes('textbook');
             return cat.includes(cf) || nm.includes(cf);
           });
@@ -2202,7 +2076,7 @@
                   id="campus-search-input" 
                   value="${this.searchQuery || ''}" 
                   oninput="App.handleSearchInput(this.value)" 
-                  placeholder="Search for Casio calculators, drafters, engineering textbooks, lab kits..." 
+                  placeholder="Search for textbooks, drafters, scientific calculators, revision notes..." 
                   class="w-full pl-12 pr-10 py-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all font-sans"
                 >
                 ${this.searchQuery ? `
@@ -2271,13 +2145,7 @@
                   <span>Calculators</span>
                 </button>
 
-                <!-- Category 6: Lab Aprons & Gear -->
-                <button onclick="App.setCategoryFilter('Lab Gear');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                  this.categoryFilter === 'Lab Gear' ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/40' : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-150 dark:border-slate-800'
-                }">
-                  <i data-lucide="flask-conical" class="w-4 h-4 text-emerald-500 ${this.categoryFilter === 'Lab Gear' ? 'text-white' : ''}"></i>
-                  <span>Lab Gear & Aprons</span>
-                </button>
+                
 
                 <!-- Category 7: Engineering Drafters -->
                 <button onclick="App.setCategoryFilter('Drafters');" class="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -2299,25 +2167,25 @@
 
             <!-- 3. FLIPKART-STYLE HERO PROMO BANNER -->
             <div class="relative overflow-hidden p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-blue-900 via-indigo-950 to-slate-900 text-white border border-blue-500/30 shadow-xl shadow-blue-950/20">
-              <div class="absolute right-0 top-0 w-80 h-80 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-              <div class="absolute left-1/3 bottom-0 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="absolute right-0 top-0 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div class="absolute left-1/3 bottom-0 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
               <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-2 max-w-xl">
-                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                    <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
-                    <span>Educircle Campus Deals & Verified Rentals</span>
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                    <i data-lucide="sparkles" class="w-3 h-3 text-blue-400"></i>
+                    <span>Educircle Campus Gear & Peer Exchange</span>
                   </div>
                   <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
-                    Rent lab gear from ₹15/day with 100% Escrow Protection
+                    Borrow, Buy & Exchange Student Gear on Campus
                   </h2>
                   <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    Why buy brand new when you can borrow calculators, drafters, and kits from verified branch peers? Instant handover, validated ZPRN students, zero scam risk.
+                    Share textbooks, drafters, and calculators directly with verified peers in your college branches. Direct peer-to-peer handover with zero middlemen.
                   </p>
                   <div class="flex items-center gap-4 pt-2 text-[11px] font-semibold text-slate-200 flex-wrap">
                     <span class="flex items-center gap-1.5"><i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Same-Day Pickup</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> 100% Auto Refund</span>
-                    <span class="flex items-center gap-1.5"><i data-lucide="repeat" class="w-3.5 h-3.5 text-blue-400"></i> Zero-Cash Peer Swaps</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="user-check" class="w-3.5 h-3.5 text-blue-400"></i> Verified Students</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="repeat" class="w-3.5 h-3.5 text-emerald-400"></i> Peer-to-Peer Exchange</span>
                   </div>
                 </div>
 
@@ -2361,8 +2229,8 @@
                   <i data-lucide="lock" class="w-5 h-5"></i>
                 </div>
                 <div>
-                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Escrow Vault</h4>
-                  <p class="text-[10px] text-slate-400">Zero deposit theft risk</p>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Campus Safe-Zones</h4>
+                  <p class="text-[10px] text-slate-400">Library & Dept meetups</p>
                 </div>
               </div>
 
@@ -2371,8 +2239,8 @@
                   <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                 </div>
                 <div>
-                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Instant Return</h4>
-                  <p class="text-[10px] text-slate-400">100% refund upon check</p>
+                  <h4 class="font-black text-xs text-slate-850 dark:text-white">Direct Handover</h4>
+                  <p class="text-[10px] text-slate-400">In-person peer meet</p>
                 </div>
               </div>
             </div>
@@ -2401,7 +2269,7 @@
                   <i data-lucide="inbox" class="w-8 h-8"></i>
                 </div>
                 <h3 class="font-bold text-slate-800 dark:text-white">No matching campus resources found</h3>
-                <p class="text-xs text-slate-400 max-w-md mx-auto">Try clearing your filters or searching for something else like "Casio", "Drafter", or "Lab Coat".</p>
+                <p class="text-xs text-slate-400 max-w-md mx-auto">Try clearing your filters or searching for something else like "Casio", "Drafter", or "Textbook".</p>
                 <button onclick="App.setCategoryFilter('all'); App.setExploreTab('all'); App.handleSearchInput('');" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer">View All Items</button>
               </div>
             ` : `
@@ -2603,20 +2471,20 @@
 
         let badgeStyle = 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/25';
         let badgeText = 'Rent / Borrow';
-        let primaryBtnText = 'Lock Escrow & Submit Rent Request';
+        let primaryBtnText = 'Submit Borrow Request';
         let primaryBtnIcon = 'shield-check';
         let primaryBtnColor = 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/25';
 
         if (method === 'rent') {
           badgeStyle = 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25';
-          badgeText = 'Rent with Escrow';
-          primaryBtnText = 'Lock Escrow & Submit Rent Request';
+          badgeText = 'Borrow / Rent';
+          primaryBtnText = 'Submit Borrow Request';
           primaryBtnIcon = 'shield-check';
           primaryBtnColor = 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-500/25';
         } else if (method === 'sell') {
           badgeStyle = 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/25';
           badgeText = 'Direct Purchase';
-          primaryBtnText = `Confirm Purchase Request (₹${item.price || 0})`;
+          primaryBtnText = 'Submit Buy Request';
           primaryBtnIcon = 'shopping-bag';
           primaryBtnColor = 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-500/25';
         } else if (method === 'exchange') {
@@ -2704,75 +2572,30 @@
                   <p class="text-slate-500 dark:text-slate-400 text-[11px] mt-1 leading-relaxed">${item.description}</p>
                 </div>
 
-                <!-- Price & Escrow Breakdown Box -->
+                <!-- Item Overview & Terms -->
                 <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2">
-                  ${method === 'rent' ? `
-                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
-                      <span class="text-slate-500">Daily Rental Fee:</span>
-                      <span class="font-black text-slate-800 dark:text-slate-200">₹${item.price || 25} / day</span>
-                    </div>
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500">Listing Mode:</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200 capitalize">${method === 'rent' ? 'Peer Borrowing / Rent' : method === 'sell' ? 'Direct Buy' : 'Item Exchange'}</span>
+                  </div>
+                  ${method === 'sell' && item.price ? `
                     <div class="flex justify-between items-center text-xs">
-                      <span class="text-slate-500">Estimated Duration:</span>
-                      <span id="calc-rental-days" class="font-bold text-slate-700 dark:text-slate-300">7 days</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs">
-                      <span class="text-slate-500">Rental Subtotal:</span>
-                      <span id="calc-rent-subtotal" class="font-bold text-slate-800 dark:text-slate-200">₹${initialRentalSubtotal}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs">
-                      <span class="text-slate-500 flex items-center gap-1">
-                        <i data-lucide="shield" class="w-3.5 h-3.5 text-emerald-500"></i>
-                        <span>Refundable Escrow Deposit:</span>
-                      </span>
-                      <span id="calc-escrow-deposit" class="font-black text-emerald-600 dark:text-emerald-400">₹${initialEscrowDeposit}</span>
-                    </div>
-                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                      <span class="font-black text-slate-900 dark:text-white text-xs">Total at Safe Handover:</span>
-                      <span id="calc-total-payable" class="text-sm font-black text-emerald-600 dark:text-emerald-400">₹${initialTotalPayable}</span>
-                    </div>
-                    <div class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[10px] text-emerald-700 dark:text-emerald-300 font-semibold flex items-center gap-1.5">
-                      <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
-                      <span>100% Refundable: Deposit stays locked in Educircle Escrow Vault until you safely return the gear.</span>
+                      <span class="text-slate-500">Price:</span>
+                      <span class="font-black text-blue-600 dark:text-blue-400">₹${item.price}</span>
                     </div>
                   ` : ''}
-
-                  ${method === 'sell' ? `
-                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
-                      <span class="text-slate-500">Item Unit Price:</span>
-                      <span class="font-black text-slate-900 dark:text-white">₹${item.price || 0}</span>
-                    </div>
+                  ${method === 'rent' && item.price ? `
                     <div class="flex justify-between items-center text-xs">
-                      <span class="text-slate-500">Selected Quantity:</span>
-                      <span id="calc-buy-qty" class="font-bold text-slate-700 dark:text-slate-300">1 unit</span>
-                    </div>
-                    <div class="flex justify-between items-center text-xs">
-                      <span class="text-slate-500">Security Deposit:</span>
-                      <span class="font-semibold text-slate-500">₹0 (None • Direct Purchase)</span>
-                    </div>
-                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                      <span class="font-black text-slate-900 dark:text-white text-xs">Total Amount Due at Handover:</span>
-                      <span id="calc-buy-total" class="text-sm font-black text-blue-600 dark:text-blue-400">₹${item.price || 0}</span>
-                    </div>
-                    <div class="p-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-700 dark:text-blue-300 font-semibold flex items-center gap-1.5">
-                      <i data-lucide="check" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i>
-                      <span>Direct Peer Purchase: Verify condition in person during campus handover before paying.</span>
+                      <span class="text-slate-500">Daily Fee:</span>
+                      <span class="font-black text-emerald-600 dark:text-emerald-400">₹${item.price} / day</span>
                     </div>
                   ` : ''}
-
                   ${method === 'exchange' ? `
-                    <div class="flex justify-between items-center text-xs pb-1.5 border-b border-slate-200/60 dark:border-slate-700/60">
-                      <span class="text-slate-500">Exchange Type:</span>
-                      <span class="font-black text-indigo-600 dark:text-indigo-400">Zero-Cash Student Barter</span>
-                    </div>
                     <div class="text-xs space-y-1">
                       <span class="text-slate-500 block">Owner is looking for:</span>
-                      <div class="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-500/20 text-xs">
-                        "${item.swapPreferences || 'Academic Books, Calculators, or Lab Instruments'}"
+                      <div class="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold border border-indigo-500/20 text-xs">
+                        "${item.swapPreferences || 'Academic Books, Calculators, or Drawing Tools'}"
                       </div>
-                    </div>
-                    <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                      <span class="font-black text-slate-900 dark:text-white text-xs">Cash Transaction Fee:</span>
-                      <span class="text-sm font-black text-emerald-600">₹0 Free</span>
                     </div>
                   ` : ''}
                 </div>
@@ -2783,12 +2606,12 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
                         <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1">Quantity</label>
-                        <input type="number" id="req-quantity" value="1" min="1" max="${availableQty}" oninput="${method === 'sell' ? `App.updateBuyCost(${item.price || 0})` : `App.updateRentalCost(${item.price || 25}, ${val})`}" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-black focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <input type="number" id="req-quantity" value="1" min="1" max="${availableQty}"  class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-black focus:ring-2 focus:ring-blue-500 focus:outline-none">
                       </div>
                       ${method === 'rent' ? `
                         <div>
                           <label class="font-bold uppercase text-[10px] text-slate-400 block mb-1">Proposed Return Date</label>
-                          <input type="date" id="req-return-date" value="${defaultReturnDate}" min="${new Date().toISOString().split('T')[0]}" onchange="App.updateRentalCost(${item.price || 25}, ${val})" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                          <input type="date" id="req-return-date" value="${defaultReturnDate}" min="${new Date().toISOString().split('T')[0]}"  class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-xs font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none">
                         </div>
                       ` : ''}
                     </div>
@@ -3921,7 +3744,7 @@
           <div class="max-w-xl mx-auto text-left space-y-6">
             <div>
               <h1 class="text-xl font-bold">Share / List a Resource</h1>
-              <p class="text-slate-400 text-xs mt-1">Lend calculators, sensors, lab tools or upload revision guide PDFs.</p>
+              <p class="text-slate-400 text-xs mt-1">Share textbooks, drafters, calculators or upload revision guide PDFs.</p>
             </div>
             
             <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">

@@ -92,27 +92,24 @@ App.handleSearchInput('Casio');
 exploreHtml = App.getExploreHtml();
 console.log(`   ✓ Search 'Casio' rendered (${exploreHtml.length} chars).`);
 
-// Test 6: Wallet Top-Up and UPI Save
-console.log("\n6. Testing Trust Wallet & UPI Settings:");
-const oldBal = studentUser.walletBalance || 1500;
-App.topUpWallet(500);
-if (studentUser.walletBalance !== oldBal + 500) {
-  console.error("❌ Wallet balance did not update!");
-  process.exit(1);
-}
-console.log(`   ✓ Wallet top-up verified (New balance: ₹${studentUser.walletBalance}).`);
-
-App.saveOwnerUpi('tejas@oksbi');
-if (studentUser.ownerUpiId !== 'tejas@oksbi') {
-  console.error("❌ Owner UPI ID did not save!");
-  process.exit(1);
-}
-console.log(`   ✓ Owner UPI ID saved verified (${studentUser.ownerUpiId}).`);
-
-// Test 7: Rental Cost Live Calculator
-console.log("\n7. Testing Live Rental Calculator Helper:");
-App.updateRentalCost(25, 1000);
-console.log("   ✓ updateRentalCost executed safely with DOM mocked values.");
+// Test 6: Clean Checkout Modal Generation
+console.log("\n6. Testing Peer Checkout Modal Flow:");
+stateObj.resources = [{
+  id: 'r_test_book',
+  name: 'GATE BOOK SEM 3',
+  category: 'Books',
+  ownerId: 'u_gaikwad_prajwal',
+  ownerName: 'Prajwal Gaikwad',
+  listingMethod: 'sell',
+  price: 450,
+  quantity: 1,
+  availableQuantity: 1,
+  availability: 'available',
+  condition: 'Good',
+  description: 'Clean textbook for semester preparation.'
+}];
+App.openBorrowRequestModal('r_test_book');
+console.log("   ✓ openBorrowRequestModal executed cleanly without payment methods.");
 
 // Test 8: Admin Login & Screen
 console.log("\n8. Testing Admin Flow:");
