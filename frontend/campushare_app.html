@@ -312,13 +312,11 @@
             this.ratings = parsed.ratings || [];
             this.pendingRegistrations = parsed.pendingRegistrations || [];
 
-            if (this.resources.length === 0) {
-              this.resetToInitial();
-              return;
-            }
-            if (!this.resources.some(r => r.name && r.name.includes('Mini Drafter'))) {
-              this.enrichWithSampleCatalog();
-            }
+            // Purge fake mock/sample items so only genuine user-created listings remain
+            this.resources = (this.resources || []).filter(r => 
+              r && r.id && !r.id.startsWith('res_sample_') && !['res_1', 'res_2', 'res_3'].includes(r.id)
+            );
+            this.save();
           } catch(e) {
             this.resetToInitial();
           }
@@ -327,209 +325,14 @@
         }
       }
 
-      enrichWithSampleCatalog() {
-        const samples = [
-          {
-            id: 'res_sample_casio_cw',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            name: 'Casio fx-991CW ClassWiz Scientific Calculator',
-            category: 'Calculators',
-            type: 'Physical Item',
-            condition: 'Mint / Verified',
-            listingMethod: 'rent',
-            itemValue: 1400,
-            price: 25,
-            lendingDuration: 7,
-            quantity: 2,
-            availableQuantity: 2,
-            availability: 'available',
-            ratingAverage: 4.9,
-            sharesCount: 38,
-            location: 'ECE Department Lobby',
-            description: 'Latest approved non-programmable scientific calculator for university semester and practical lab exams.'
-          },
-          {
-            id: 'res_sample_drafter',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            name: 'Engineering Mini Drafter (Omega Pro)',
-            category: 'Drafters',
-            type: 'Physical Item',
-            condition: 'Excellent',
-            listingMethod: 'sell',
-            itemValue: 950,
-            price: 420,
-            quantity: 1,
-            availableQuantity: 1,
-            availability: 'available',
-            ratingAverage: 4.8,
-            sharesCount: 19,
-            location: 'Mechanical Drawing Hall / Hostel B',
-            description: 'Heavy-duty steel clamp mini drafter with unbroken scale. Perfect for Engineering Graphics & CAD courses.'
-          },
-          {
-            id: 'res_sample_labkit',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            name: 'Electronics Multimeter & Breadboard Lab Kit',
-            category: 'Lab Gear',
-            type: 'Physical Item',
-            condition: 'Good',
-            listingMethod: 'exchange',
-            swapPreferences: '8051 Microcontroller / PIC Kit',
-            itemValue: 1800,
-            price: 0,
-            quantity: 1,
-            availableQuantity: 1,
-            availability: 'available',
-            ratingAverage: 5.0,
-            sharesCount: 27,
-            location: 'Electronics Lab 1',
-            description: 'Complete student kit: DT830D digital multimeter, 840-point breadboard, and 65 jumper wires with resistors.'
-          },
-          {
-            id: 'res_sample_mechanics',
-            ownerId: 'u_admin',
-            ownerName: 'Campus Resource Center',
-            name: 'Engineering Mechanics (Beer & Johnston)',
-            category: 'Books',
-            type: 'Physical Item',
-            condition: 'Like New',
-            listingMethod: 'rent',
-            itemValue: 750,
-            price: 15,
-            lendingDuration: 14,
-            quantity: 3,
-            availableQuantity: 3,
-            availability: 'available',
-            ratingAverage: 4.9,
-            sharesCount: 42,
-            location: 'Central Library Counter 2',
-            description: 'Standard textbook for 1st/2nd year engineering mechanics. Clean pages, no torn diagrams.'
-          },
-          {
-            id: 'res_sample_apron',
-            ownerId: 'u_admin',
-            ownerName: 'Campus Resource Center',
-            name: 'Cotton White Lab Coat & Safety Apron (Size M)',
-            category: 'Lab Gear',
-            type: 'Physical Item',
-            condition: 'Clean / Fresh',
-            listingMethod: 'rent',
-            itemValue: 450,
-            price: 10,
-            lendingDuration: 3,
-            quantity: 5,
-            availableQuantity: 5,
-            availability: 'available',
-            ratingAverage: 4.7,
-            sharesCount: 56,
-            location: 'Chemistry Lab Store',
-            description: '100% thick cotton white apron with deep front pockets. Required for Chemistry & ECE hardware labs.'
-          }
-        ];
-        this.resources.push(...samples);
-        this.save();
-      }
+      
 
       resetToInitial() {
         this.currentUser = null;
         this.users = INITIAL_USERS;
-        this.resources = [
-          {
-            id: 'res_1',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            name: 'Casio fx-991EX ClassWiz Scientific Calculator',
-            category: 'Electronics & IoT',
-            type: 'Physical Item',
-            condition: 'Like New',
-            listingMethod: 'rent',
-            itemValue: 1200,
-            price: 20,
-            quantity: 2,
-            availableQuantity: 2,
-            availability: 'available',
-            description: 'Standard engineering calculator with high-resolution LCD display and matrix calculations.'
-          },
-          {
-            id: 'res_2',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            name: 'Arduino Uno R3 Starter Kit with Sensors',
-            category: 'Electronics & IoT',
-            type: 'Physical Item',
-            condition: 'Good',
-            listingMethod: 'exchange',
-            swapPreferences: 'ESP32 / Raspberry Pi',
-            itemValue: 2500,
-            price: 0,
-            quantity: 1,
-            availableQuantity: 1,
-            availability: 'available',
-            description: 'Complete kit with breadboard, jumper wires, ultrasonic sensor, servo motor, and LCD.'
-          },
-          {
-            id: 'res_3',
-            ownerId: 'u_admin',
-            ownerName: 'Campus Resource Center',
-            name: 'Digital Signal Processing (Proakis & Manolakis)',
-            category: 'Books',
-            type: 'Physical Item',
-            condition: 'Good',
-            listingMethod: 'rent',
-            itemValue: 850,
-            price: 15,
-            quantity: 3,
-            availableQuantity: 3,
-            availability: 'available',
-            description: 'Essential textbook for 4th semester ECE signal processing course.'
-          }
-        ];
-        this.transactions = [
-          {
-            id: 'tx_demo_1',
-            resourceId: 'res_demo_prev',
-            resourceName: 'Texas Instruments TI-84 Plus CE Graphing Calculator',
-            ownerId: 'u_admin',
-            ownerName: 'Campus Resource Center',
-            borrowerId: 'u_student_tejas',
-            borrowerName: 'Tejas Mahajan',
-            txType: 'rent',
-            status: 'Returned',
-            borrowDate: '2026-08-10',
-            expectedReturnDate: '2026-08-17',
-            actualReturnDate: '2026-08-16',
-            securityDeposit: 500,
-            depositStatus: 'Released',
-            updatedAt: '2026-08-16T14:30:00Z'
-          },
-          {
-            id: 'tx_demo_2',
-            resourceId: 'res_demo_swap',
-            resourceName: 'Signals & Systems (Oppenheim 2nd Ed.)',
-            ownerId: 'u_student_tejas',
-            ownerName: 'Tejas Mahajan',
-            borrowerId: 'u_admin',
-            borrowerName: 'Pooja Sharma',
-            txType: 'exchange',
-            status: 'Returned',
-            ownerHandedOver: true,
-            borrowerHandedOver: true,
-            updatedAt: '2026-08-20T11:00:00Z'
-          }
-        ];
-        this.notifications = [
-          {
-            id: 'n_welcome',
-            userId: 'u_student_tejas',
-            content: '🎉 Welcome to Educircle! Your verified ECE profile is active with +92 Trust Standing.',
-            type: 'system',
-            createdAt: new Date().toISOString(),
-            isRead: false
-          }
-        ];
+        this.resources = [];
+        this.transactions = [];
+        this.notifications = [];
         this.messages = [];
         this.reports = [];
         this.lostAndFound = [];
@@ -705,10 +508,15 @@
         this.render();
       },
 
-      openWhatsApp(ownerName, itemName, method) {
-        const cleanMethod = method || 'borrow';
-        const msg = encodeURIComponent(`Hi ${ownerName}, I saw your ${itemName} on Educircle for ${cleanMethod} and I'm interested. Can we meet near the campus lobby?`);
-        window.open(`https://wa.me/?text=${msg}`, '_blank');
+      openChatWithOwner(ownerId, ownerName, itemName) {
+        if (!stateObj.currentUser) {
+          showToast('Please log in to chat with ' + (ownerName ? ownerName.split(' ')[0] : 'the owner') + ' on the website.', 'info');
+          this.closeModal();
+          this.navigateTo('login');
+          return;
+        }
+        this.closeModal();
+        this.navigateTo('messages', { chatWith: ownerId });
       },
 
       init() {
@@ -2839,7 +2647,7 @@
 
             <!-- Two-Column Layout (Flipkart E-Commerce Style) -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
-              <!-- Left Column: Item Showcase, Location & WhatsApp Connect -->
+              <!-- Left Column: Item Showcase, Location & Direct Campus Chat -->
               <div class="md:col-span-5 space-y-3.5">
                 <div class="aspect-[4/3] w-full rounded-2xl bg-slate-100 dark:bg-slate-800 overflow-hidden relative border border-slate-200 dark:border-slate-800 flex items-center justify-center">
                   ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<i data-lucide="package" class="w-12 h-12 text-slate-300"></i>`}
@@ -2880,10 +2688,10 @@
                     <span>Pickup: <strong>${item.location || 'Campus Safe-Zone'}</strong></span>
                   </div>
 
-                  <!-- Direct WhatsApp Button -->
-                  <button type="button" onclick="App.openWhatsApp('${item.ownerName.replace(/'/g, "\\'")}', '${item.name.replace(/'/g, "\\'")}', '${method}')" class="w-full py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-black rounded-xl text-[11px] flex items-center justify-center gap-1.5 border border-emerald-500/20 transition-all cursor-pointer">
-                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
-                    <span>WhatsApp ${item.ownerName.split(' ')[0]}</span>
+                  <!-- Direct In-Website Chat Button -->
+                  <button type="button" onclick="App.openChatWithOwner('${item.ownerId}', '${item.ownerName.replace(/'/g, "\\'")}', '${item.name.replace(/'/g, "\\'")}')" class="w-full py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md shadow-blue-500/20 transition-all cursor-pointer">
+                    <i data-lucide="message-square" class="w-4 h-4"></i>
+                    <span>Chat with ${item.ownerName.split(' ')[0]} on Website</span>
                   </button>
                 </div>
               </div>
@@ -4441,26 +4249,62 @@
       // -------------------------------------------------------------
       getMessagesHtml() {
         const user = stateObj.currentUser;
+        if (!user) {
+          return `
+            <div class="h-[60vh] flex flex-col items-center justify-center text-center p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800/50 flex items-center justify-center mb-3">
+                <i data-lucide="message-square" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <h3 class="text-base font-bold text-slate-800 dark:text-white">Campus Direct Chat</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1 mb-5">Please log in to your verified student account to coordinate physical exchanges and chat directly on the website.</p>
+              <button onclick="App.navigateTo('login')" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-blue-500/25 cursor-pointer">Log In to Chat</button>
+            </div>
+          `;
+        }
         const chats = stateObj.messages.filter(m => m.senderId === user.id || m.receiverId === user.id);
         const uniqueContacts = Array.from(new Set(chats.map(m => m.senderId === user.id ? m.receiverId : m.senderId)));
+
+        const targetChat = this.viewParams && this.viewParams.chatWith;
+        if (targetChat && !uniqueContacts.includes(targetChat)) {
+          uniqueContacts.unshift(targetChat);
+        }
+
+        if (targetChat) {
+          setTimeout(() => {
+            if (this.currentView === 'messages') {
+              this.selectChat(targetChat);
+            }
+          }, 60);
+        }
 
         return `
           <div class="h-[80vh] flex rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900 shadow-sm text-left">
             <div class="w-72 border-r border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 overflow-y-auto">
-              <div class="p-4 border-b border-slate-200 dark:border-slate-800 font-bold text-xs">Conversations</div>
+              <div class="p-4 border-b border-slate-200 dark:border-slate-800 font-bold text-xs flex items-center justify-between">
+                <span>Conversations</span>
+                <span class="text-[10px] bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full font-bold">On-Campus</span>
+              </div>
               ${uniqueContacts.length === 0 ? '<div class="p-4 text-xs text-slate-400">No active messages yet.</div>' : uniqueContacts.map(cid => {
                 const c = stateObj.users.find(u => u.id === cid);
+                const name = c ? c.name : (stateObj.resources.find(r => r.ownerId === cid)?.ownerName || 'Campus Peer');
                 return `
-                  <div onclick="App.selectChat('${c ? c.id : cid}')" class="p-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-xs font-bold border-b dark:border-slate-800">
-                    ${c ? c.name : 'Unknown User'}
+                  <div onclick="App.selectChat('${cid}')" class="p-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-xs font-bold border-b dark:border-slate-800 flex items-center gap-2.5 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 flex items-center justify-center font-bold text-xs shrink-0">
+                      ${name.charAt(0)}
+                    </div>
+                    <div class="truncate">
+                      <div class="text-slate-800 dark:text-slate-200">${name}</div>
+                      <div class="text-[10px] text-slate-400 font-normal">Student Peer</div>
+                    </div>
                   </div>
                 `;
               }).join('')}
             </div>
 
             <div id="chat-feed-container" class="flex-1 flex flex-col justify-between">
-              <div class="flex-1 flex items-center justify-center text-slate-400 text-xs">
-                Select a conversation on the left to coordinate physical exchange.
+              <div class="flex-1 flex flex-col items-center justify-center text-slate-400 text-xs gap-2 p-6 text-center">
+                <i data-lucide="messages-square" class="w-8 h-8 text-slate-300 dark:text-slate-600"></i>
+                <span>Select a conversation on the left to coordinate physical exchange on campus.</span>
               </div>
             </div>
           </div>
@@ -4469,20 +4313,44 @@
 
       selectChat(partnerId) {
         const user = stateObj.currentUser;
+        if (!user) return;
         const partner = stateObj.users.find(u => u.id === partnerId);
+        const partnerName = partner ? partner.name : (stateObj.resources.find(r => r.ownerId === partnerId)?.ownerName || 'Campus Peer');
         const filtered = stateObj.messages.filter(m =>
           (m.senderId === user.id && m.receiverId === partnerId) ||
           (m.senderId === partnerId && m.receiverId === user.id)
         );
 
         const chatWindow = document.getElementById('chat-feed-container');
+        if (!chatWindow) return;
         chatWindow.innerHTML = `
-          <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 font-bold text-xs">${partner ? partner.name : 'Contact'}</div>
+          <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
+                ${partnerName.charAt(0)}
+              </div>
+              <div>
+                <div class="font-bold text-xs text-slate-900 dark:text-white">${partnerName}</div>
+                <div class="text-[10px] text-emerald-500 font-medium flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Verified Campus Peer
+                </div>
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-400 flex items-center gap-1">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-500"></i> In-Website Secure Chat
+            </div>
+          </div>
           <div class="flex-1 p-4 overflow-y-auto space-y-3" id="messages-box">
-            ${filtered.map(m => `
+            ${filtered.length === 0 ? `
+              <div class="py-12 text-center text-slate-400 text-xs space-y-1">
+                <i data-lucide="message-square-plus" class="w-6 h-6 mx-auto text-slate-300 dark:text-slate-600 mb-2"></i>
+                <div class="font-semibold text-slate-600 dark:text-slate-300">Start the conversation with ${partnerName.split(' ')[0]}</div>
+                <div>Send a message below to coordinate meetup location, exam timings, or item condition.</div>
+              </div>
+            ` : filtered.map(m => `
               <div class="flex ${m.senderId === user.id ? 'justify-end' : 'justify-start'}">
                 <div class="p-3 rounded-2xl text-xs max-w-[70%] ${
-                  m.senderId === user.id ? 'bg-brand-600 text-white rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none'
+                  m.senderId === user.id ? 'bg-blue-600 text-white rounded-tr-none shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none'
                 }">
                   ${m.content}
                 </div>
@@ -4490,11 +4358,11 @@
             `).join('')}
           </div>
           <form onsubmit="App.sendMsg(event, '${partnerId}')" class="p-4 border-t border-slate-200 dark:border-slate-800 flex gap-2">
-            <input type="text" id="chat-input-box" placeholder="Coordinate meetup place or time..." class="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none">
-            <button type="submit" class="px-5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold">Send</button>
+            <input type="text" id="chat-input-box" placeholder="Coordinate meetup place or time on campus..." class="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+            <button type="submit" class="px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 cursor-pointer">Send</button>
           </form>
         `;
-        
+        if (window.lucide) window.lucide.createIcons();
         const box = document.getElementById('messages-box');
         if (box) box.scrollTop = box.scrollHeight;
       },

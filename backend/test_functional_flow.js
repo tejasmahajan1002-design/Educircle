@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
@@ -121,6 +121,24 @@ stateObj.currentUser = adminUser;
 const adminHtml = App.getAdminHtml();
 console.log(`   ✓ Admin screen rendered successfully (${adminHtml.length} characters).`);
 
+// Test 9: In-Website Direct Chat Flow
+console.log("\n9. Testing In-Website Direct Chat Flow:");
+stateObj.currentUser = studentUser;
+App.openChatWithOwner('u_gaikwad_prajwal', 'Prajwal Gaikwad', 'GATE BOOK SEM 3');
+if (App.currentView !== 'messages' || App.viewParams.chatWith !== 'u_gaikwad_prajwal') {
+  console.error("❌ Direct Chat navigation failed!");
+  process.exit(1);
+}
+const msgsHtml = App.getMessagesHtml();
+if (!msgsHtml || !msgsHtml.includes('Conversations')) {
+  console.error("❌ Messages screen failed to render!");
+  process.exit(1);
+}
+console.log(`   ✓ Messages screen rendered successfully (${msgsHtml.length} characters).`);
+App.selectChat('u_gaikwad_prajwal');
+console.log("   ✓ selectChat executed without errors.");
+
 console.log("\n====================================================");
 console.log("✅ ALL FUNCTIONAL RUNTIME TESTS PASSED WITH 0 ERRORS!");
 console.log("====================================================");
+
