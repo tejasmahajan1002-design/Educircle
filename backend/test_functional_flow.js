@@ -28,7 +28,7 @@ global.document = {
     focus: () => {},
     setSelectionRange: () => {}
   }),
-  createElement: () => ({ appendChild: () => {}, className: '', style: {}, remove: () => {} }),
+  createElement: () => ({ appendChild: () => {}, className: '', style: {}, remove: () => {}, click: () => {} }),
   body: { appendChild: () => {} }
 };
 global.lucide = { createIcons: () => {} };
@@ -133,9 +133,124 @@ if (!msgsHtml || !msgsHtml.includes('Conversations')) {
 }
 console.log(`   ✓ Messages screen rendered successfully (${msgsHtml.length} characters).`);
 App.selectChat('u_gaikwad_prajwal');
-console.log("   ✓ selectChat executed without errors.");
+// Test 10: Study Materials, Student Folders & PDF Flow
+console.log("\n10. Testing Study Materials & Student Folders Flow:");
+stateObj.currentUser = studentUser;
+stateObj.studyFolders = [];
+stateObj.studyMaterials = [];
+
+// 10.1 Root Study Materials View
+const studyRootHtml = App.getStudyMaterialsHtml();
+if (!studyRootHtml || !studyRootHtml.includes('Student Study Folders')) {
+  console.error("❌ Study Materials Hub failed to render root view!");
+  process.exit(1);
+}
+console.log("   ✓ Root Study Materials Hub rendered successfully.");
+
+// 10.2 Create Folder
+const baseMockEl = (val = '') => ({
+  value: val,
+  checked: false,
+  style: {},
+  innerHTML: '',
+  innerText: '',
+  remove: () => {},
+  focus: () => {},
+  setSelectionRange: () => {}
+});
+
+document.getElementById = (id) => {
+  if (id === 'new-folder-name') return baseMockEl('Data Structures & Algorithms');
+  if (id === 'new-folder-subject') return baseMockEl('Computer Engineering');
+  if (id === 'new-folder-desc') return baseMockEl('Lecture slides and notes');
+  return baseMockEl();
+};
+App.submitCreateFolder();
+if (stateObj.studyFolders.length !== 1 || stateObj.studyFolders[0].name !== 'Data Structures & Algorithms') {
+  console.error("❌ Failed to create study folder!");
+  process.exit(1);
+}
+const createdFolder = stateObj.studyFolders[0];
+console.log(`   ✓ Folder created: "${createdFolder.name}" owned by ${createdFolder.ownerName}`);
+
+// 10.3 Upload PDF into Student's Folder
+App.selectedPdfBase64 = 'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXr...';
+App.selectedPdfFileName = 'DSA_Trees_Notes.pdf';
+App.selectedPdfFileSize = '2.4 MB';
+
+document.getElementById = (id) => {
+  if (id === 'upload-doc-title') return baseMockEl('Binary Trees & Graphs Full Notes');
+  if (id === 'upload-target-folder') return baseMockEl(createdFolder.id);
+  if (id === 'upload-doc-subject') return baseMockEl('Computer Engineering');
+  if (id === 'upload-doc-sem') return baseMockEl('Semester 3');
+  if (id === 'upload-doc-desc') return baseMockEl('Complete unit 4 coverage');
+  return baseMockEl();
+};
+App.submitUploadPdf();
+
+if (stateObj.studyMaterials.length !== 1 || stateObj.studyMaterials[0].title !== 'Binary Trees & Graphs Full Notes') {
+  console.error("❌ Failed to upload PDF into student folder!");
+  process.exit(1);
+}
+const uploadedDoc = stateObj.studyMaterials[0];
+console.log(`   ✓ PDF stored in folder: "${uploadedDoc.title}" (${uploadedDoc.fileSize})`);
+
+// 10.4 Verify Folder View Rendering
+App.openStudyFolder(createdFolder.id);
+const folderViewHtml = App.getStudyMaterialsHtml();
+if (!folderViewHtml || !folderViewHtml.includes('Binary Trees & Graphs Full Notes')) {
+  console.error("❌ Folder view failed to display uploaded PDF!");
+  process.exit(1);
+}
+console.log("   ✓ Folder view rendered with uploaded PDF.");
+
+// 10.5 Auto-generate Folder on Upload Test
+stateObj.currentUser = { id: 'u_student_new', name: 'Rohan Sharma', role: 'student' };
+App.selectedPdfBase64 = 'data:application/pdf;base64,JVBERi0xLjQK...';
+App.selectedPdfFileName = 'Maths_Formulae.pdf';
+App.selectedPdfFileSize = '500 KB';
+document.getElementById = (id) => {
+  if (id === 'upload-doc-title') return baseMockEl('Quick Maths Cheat Sheet');
+  if (id === 'upload-target-folder') return baseMockEl('auto_generate');
+  if (id === 'upload-custom-folder-name') return baseMockEl("Rohan's Exam Vault");
+  if (id === 'upload-doc-subject') return baseMockEl('Maths');
+  if (id === 'upload-doc-sem') return baseMockEl('Semester 3');
+  return baseMockEl();
+};
+App.submitUploadPdf();
+
+const autoGenFolder = stateObj.studyFolders.find(f => f.name === "Rohan's Exam Vault");
+if (!autoGenFolder) {
+  console.error("❌ Auto folder generation during upload failed!");
+  process.exit(1);
+}
+console.log(`   ✓ Auto-generated folder: "${autoGenFolder.name}" for new student.`);
+
+// 10.6 Cross-student Upload Restriction Test (Security Check)
+// Rohan Sharma cannot upload to Tejas Mahajan's folder
+const countBeforeMalicious = stateObj.studyMaterials.length;
+document.getElementById = (id) => {
+  if (id === 'upload-doc-title') return baseMockEl('Malicious Upload Attempt');
+  if (id === 'upload-target-folder') return baseMockEl(createdFolder.id); // Tejas's folder
+  return baseMockEl();
+};
+App.submitUploadPdf();
+if (stateObj.studyMaterials.length !== countBeforeMalicious) {
+  console.error("❌ Security failure: Student was able to upload into another student's folder!");
+  process.exit(1);
+}
+console.log("   ✓ Security enforced: Student cannot upload into another student's folder.");
+
+// 10.7 Download & View
+App.downloadStudyPdf(uploadedDoc.id);
+if (uploadedDoc.downloads !== 1) {
+  console.error("❌ Download count did not increment!");
+  process.exit(1);
+}
+console.log("   ✓ PDF download count incremented.");
 
 console.log("\n====================================================");
 console.log("✅ ALL FUNCTIONAL RUNTIME TESTS PASSED WITH 0 ERRORS!");
 console.log("====================================================");
+
 
