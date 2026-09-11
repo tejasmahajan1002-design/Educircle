@@ -41,11 +41,8 @@ router.post('/auth/register', async (req, res) => {
   const semester = '1st Sem';
   const mobileNumber = '';
 
-  // Check duplicate verified email
+  // Check duplicate verified email - if user exists, allow sending fresh OTP to re-verify
   const existingUser = db.users.findOne({ email });
-  if (existingUser && existingUser.emailVerified) {
-    return res.status(400).json({ message: 'An active verified account with this email already exists.' });
-  }
 
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(password, salt);
