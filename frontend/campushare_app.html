@@ -1189,7 +1189,7 @@
           } catch(err) {}
         }
 
-        showToast(`Verification OTP is 123456! Enter it below to activate your account.`, 'success');
+        showToast(`Verification code sent to ${email}! Check your inbox.`, 'success');
         this.navigateTo('verify_email', { email });
       },
 
@@ -1225,23 +1225,7 @@
           <div class="max-w-md mx-auto py-12 px-6 text-left animate-fade-in">
             <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-2xl space-y-6">
               <h2 class="text-xl font-bold text-slate-900 dark:text-white text-center">Reset Password</h2>
-              <p class="text-xs text-slate-400 text-center mt-1">We have sent a 6-digit reset code to <strong class="text-slate-700 dark:text-slate-350">${email}</strong>.</p>
-              
-              <!-- Instant Reset Code Helper Banner -->
-              <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-800/70 text-xs text-amber-700 dark:text-amber-300 flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3 text-left">
-                  <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold">
-                    <i data-lucide="key-round" class="w-4 h-4"></i>
-                  </div>
-                  <div>
-                    <div class="text-[10px] uppercase font-black tracking-wider text-amber-600 dark:text-amber-400">Reset Verification Code</div>
-                    <div class="font-mono text-lg tracking-widest font-black text-amber-900 dark:text-amber-100">123456</div>
-                  </div>
-                </div>
-                <button type="button" onclick="document.getElementById('reset-otp').value = '123456'" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs shadow-md shadow-amber-500/20 cursor-pointer hover-lift">
-                  Auto Fill
-                </button>
-              </div>
+              <p class="text-xs text-slate-400 text-center mt-1">We have sent a 6-digit reset code to your registered email <strong class="text-slate-700 dark:text-slate-350">${email}</strong>.</p>
               
               <div class="space-y-4">
                 <div>
@@ -1419,22 +1403,6 @@
                 </div>
               </div>
 
-              <!-- Instant Verification Code Helper Banner -->
-              <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border-2 border-blue-200 dark:border-blue-800/70 text-xs text-blue-700 dark:text-blue-300 flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-3 text-left">
-                  <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
-                    <i data-lucide="key-round" class="w-4 h-4"></i>
-                  </div>
-                  <div>
-                    <div class="text-[10px] uppercase font-black tracking-wider text-blue-500">Your Verification Code</div>
-                    <div class="font-mono text-lg tracking-widest font-black text-blue-900 dark:text-blue-100">123456</div>
-                  </div>
-                </div>
-                <button type="button" onclick="document.getElementById('otp-code-input').value = '123456'" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-md shadow-blue-500/20 cursor-pointer hover-lift">
-                  Auto Fill
-                </button>
-              </div>
-
               <div class="space-y-4 text-left">
                 <div>
                   <label class="text-[10px] font-bold uppercase text-slate-400 block mb-2 text-center">Enter 6-Digit OTP Code</label>
@@ -1551,7 +1519,7 @@
           showToast(`[SIMULATED] Since backend is offline, please enter the simulated OTP: ${simulatedOtp}`, 'warning');
         }
 
-        showToast(`Fresh verification code is 123456!`, 'success');
+        showToast(`Fresh verification code sent to ${email}! Check your inbox.`, 'success');
         this.startResendTimer(60);
         this.render();
       },
