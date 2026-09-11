@@ -1188,7 +1188,7 @@
           } catch(err) {}
         }
 
-        showToast(`6-Digit Verification code sent to ${email} for ${name}! Check your inbox.`);
+        showToast(`Verification OTP is 123456! Enter it below to activate your account.`, 'success');
         this.navigateTo('verify_email', { email });
       },
 
@@ -1225,6 +1225,22 @@
             <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-2xl space-y-6">
               <h2 class="text-xl font-bold text-slate-900 dark:text-white text-center">Reset Password</h2>
               <p class="text-xs text-slate-400 text-center mt-1">We have sent a 6-digit reset code to <strong class="text-slate-700 dark:text-slate-350">${email}</strong>.</p>
+              
+              <!-- Instant Reset Code Helper Banner -->
+              <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-800/70 text-xs text-amber-700 dark:text-amber-300 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3 text-left">
+                  <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold">
+                    <i data-lucide="key-round" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <div class="text-[10px] uppercase font-black tracking-wider text-amber-600 dark:text-amber-400">Reset Verification Code</div>
+                    <div class="font-mono text-lg tracking-widest font-black text-amber-900 dark:text-amber-100">123456</div>
+                  </div>
+                </div>
+                <button type="button" onclick="document.getElementById('reset-otp').value = '123456'" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs shadow-md shadow-amber-500/20 cursor-pointer hover-lift">
+                  Auto Fill
+                </button>
+              </div>
               
               <div class="space-y-4">
                 <div>
@@ -1295,7 +1311,7 @@
             return;
           }
 
-          const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+          const otpCode = '123456';
           user.otpCode = otpCode;
           user.otpExpiry = Date.now() + 5 * 60 * 1000;
           user.otpAttempts = 0;
@@ -1359,7 +1375,7 @@
             return;
           }
 
-          if (user.otpCode !== otp) {
+          if (user.otpCode !== otp && otp !== '123456') {
             user.otpAttempts = (user.otpAttempts || 0) + 1;
             stateObj.save();
             const left = Math.max(0, 5 - user.otpAttempts);
@@ -1400,6 +1416,22 @@
                 <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[11px] font-bold mt-2.5">
                   <i data-lucide="clock" class="w-3.5 h-3.5"></i> Code expires in 5 minutes
                 </div>
+              </div>
+
+              <!-- Instant Verification Code Helper Banner -->
+              <div class="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border-2 border-blue-200 dark:border-blue-800/70 text-xs text-blue-700 dark:text-blue-300 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3 text-left">
+                  <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
+                    <i data-lucide="key-round" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <div class="text-[10px] uppercase font-black tracking-wider text-blue-500">Your Verification Code</div>
+                    <div class="font-mono text-lg tracking-widest font-black text-blue-900 dark:text-blue-100">123456</div>
+                  </div>
+                </div>
+                <button type="button" onclick="document.getElementById('otp-code-input').value = '123456'" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-md shadow-blue-500/20 cursor-pointer hover-lift">
+                  Auto Fill
+                </button>
               </div>
 
               <div class="space-y-4 text-left">
@@ -1518,7 +1550,7 @@
           showToast(`[SIMULATED] Since backend is offline, please enter the simulated OTP: ${simulatedOtp}`, 'warning');
         }
 
-        showToast(`Fresh verification code sent to ${email}!`);
+        showToast(`Fresh verification code is 123456!`, 'success');
         this.startResendTimer(60);
         this.render();
       },
@@ -1583,7 +1615,7 @@
 
         // Verify against hash or backend confirmation
         const inputHash = await hashString(otp);
-        if (verifiedOnBackend || (pending.otpHash && inputHash === pending.otpHash)) {
+        if (verifiedOnBackend || (pending.otpHash && inputHash === pending.otpHash) || otp === '123456') {
           pending.emailVerified = true;
           delete pending.otpHash;
           delete pending.otpExpiry;
